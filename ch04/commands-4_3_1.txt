@@ -1,0 +1,16 @@
+## ======================================================================
+# Gitのリポジトリをクローンしてmainブランチをチェックアウト
+$ git clone -b main https://git.kernel.org/pub/scm/git/git.git
+...
+
+# クローンした時点の最新のコミットが表示される
+$ git log -1 --pretty=oneline HEAD
+30cc8d0f147546d4dd77bf497f4dec51e7265bd8 ... A regression fix for 2.37
+
+$ git log -1 --pretty=oneline 30c
+fatal: ambiguous argument '30c': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+$ git log -1 --pretty=oneline 30cc8d
+30cc8d0f147546d4dd77bf497f4dec51e7265bd8 A regression fix for 2.37

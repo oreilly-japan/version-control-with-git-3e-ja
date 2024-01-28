@@ -1,0 +1,20 @@
+## ======================================================================
+$ cd ~
+$ git clone my_website new_website
+
+$ ls -lsa my_website new_website
+...
+$ diff -r my_website new_website
+...
+
+## ======================================================================
+$ cd ~
+$ git clone https://git-hosted-server.com/some-dir/my_website.git new_website
+Cloning into 'new_website'...
+remote: Enumerating objects: 2, done.
+remote: Counting objects: 100% (2/2), done.
+remote: Compressing objects: 100% (103/103), done.
+remote: Total 125 (delta 45), reused 65 (delta 18), pack-reused 0
+Receiving objects: 100% (125/125), 1.67 MiB | 4.03 MiB/s, done.
+Resolving deltas: 100% (45/45), done.
+

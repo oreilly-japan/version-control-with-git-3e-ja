@@ -1,0 +1,106 @@
+## ======================================================================
+$ cat >> file
+Line 5 stuff
+Line 6 stuff
+^D
+
+$ git commit -a -m "Add line 5 and 6"
+[main 6c5634c] Add line 5 and 6
+ 1 file changed, 2 insertions(+)
+
+$ git checkout alternate
+Switched to branch "alternate"
+
+$ git show-branch
+* [alternate] Add alternate's line 4
+ ! [main] Add line 5 and 6
+--
+ + [main] Add line 5 and 6
+*+ [alternate] Add alternate's line 4
+
+# alternateでは、fileは「Line 4 alternate stuff」という行で終わっている
+
+$ cat >> file
+Line 5 alternate stuff
+Line 6 alternate stuff
+^D
+
+$ cat file
+Line 1 stuff
+Line 2 stuff
+Line 3 stuff
+Line 4 alternate stuff
+Line 5 alternate stuff
+Line 6 alternate stuff
+
+$ git diff
+diff --git a/file b/file
+index a29c52b..802acf8 100644
+--- a/file
++++ b/file
+@@ -2,3 +2,5 @@ Line 1 stuff
+ Line 2 stuff
+ Line 3 stuff
+ Line 4 alternate stuff
++Line 5 alternate stuff
++Line 6 alternate stuff
+
+$ git commit -a -m "Add alternate line 5 and 6"
+[alternate 0ca87a4] Add alternate line 5 and 6
+ 1 file changed, 2 insertions(+)
+
+$ git show-branch
+* [alternate] Add alternate line 5 and 6
+ ! [main] Add line 5 and 6
+--
+*  [alternate] Add alternate line 5 and 6
+ + [main] Add line 5 and 6
+*+ [alternate^] Add alternate's line 4
+
+$ git checkout main
+Switched to branch "main"
+
+$ git merge alternate
+Auto-merging file
+CONFLICT (content): Merge conflict in file
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ git diff
+diff --cc file
+index 4d77dd1,802acf8..0000000
+--- a/file
++++ b/file
+@@@ -2,5 -2,5 +2,10 @@@ Line 1 stuf
+  Line 2 stuff
+  Line 3 stuff
+  Line 4 alternate stuff
+++<<<<<<< HEAD
+ +Line 5 stuff
+ +Line 6 stuff
+++=======
++ Line 5 alternate stuff
++ Line 6 alternate stuff
+++>>>>>>> alternate
+
+$ cat file
+Line 1 stuff
+Line 2 stuff
+Line 3 stuff
+Line 4 alternate stuff
+Line 5 stuff
+Line 6 alternate stuff
+
+$ git add file
+
+$ git commit
+# マージコミットメッセージを編集する
+[main f1fa82f] Merge branch 'alternate'
+
+$ git show-branch
+! [alternate] Add alternate line 5 and 6
+ * [main] Merge branch 'alternate'
+--
+ - [main] Merge branch 'alternate'
++* [alternate] Add alternate line 5 and 6
+
+$ git log

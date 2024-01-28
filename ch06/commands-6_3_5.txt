@@ -1,0 +1,6 @@
+## ======================================================================
+$ git checkout -m
+
+$ git merge --abort
+
+$ git reset --hard ORIG_HEAD

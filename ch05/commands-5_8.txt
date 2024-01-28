@@ -1,0 +1,88 @@
+## ======================================================================
+$ cat .gitignore
+# .gitignoreファイルのパターンの例
+
+# 次の行はコメントではない。「#」はパターンの先頭文字となる
+\#*.tmp
+
+# リテラルのファイル名
+somefile.log
+
+# ディレクトリ名のみにマッチする
+my_package/
+
+# ワイルドカードを使ったパターン
+*.[oa]
+*.log
+debug/*.o
+
+# ワイルドカードを使った反転パターン（important.logファイルだけは無視されなくする）
+!important.log
+
+## ======================================================================
+$ cd my_package
+$ cat .gitignore
+*.o
+
+$ cd my_package/vendor_files
+$ cat .gitignore
+!driver.o
+
+## ======================================================================
+$ ls -RF
+.:
+debug/  important.log  main.o  my_package/  somefile.log
+
+./debug:
+anotherfile
+
+./my_package:
+file  package.log
+$ cat .gitignore
+\#*.tmp
+somefile.log
+my_package/
+*.[oa]
+*.log
+debug/*.o
+!important.log
+$ git ls-files --other --ignored --exclude-standard
+main.o
+my_package/file
+my_package/package.log
+somefile.log
+
+$ git status --ignored
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        debug/
+        important.log
+
+Ignored files:
+  (use "git add -f <file>..." to include in what will be committed)
+        main.o
+        my_package/
+        somefile.log
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+# パターンにマッチするファイル
+$ git check-ignore my_package/anotherfile
+my_package/anotherfile
+$ git check-ignore -v my_package/anotherfile
+.gitignore:3:my_package/        my_package/anotherfile
+
+# パターンにマッチしないファイル
+$ git check-ignore index.html
+$ git check-ignore -v index.html
+$
+
+# 追跡対象から除外しないパターンにマッチするファイル
+$ git check-ignore debug/important.log
+$ git check-ignore -v debug/important.log
+.gitignore:7:!important.log     debug/important.log

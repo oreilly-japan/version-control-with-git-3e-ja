@@ -1,0 +1,22 @@
+## ======================================================================
+$ git lfs track "*.mp4"
+
+$ git lfs track "*.png"
+
+$ git lfs track "*.[pP][nN][gG]"
+
+$ git lfs untrack "*.png"
+Untracking "*.png"
+
+# 更新後の.gitattributesファイルをステージング、コミットする
+
+$ git lfs track "*.png" --lockable
+
+$ git lfs lock assets/image.png
+Locked assets/image.png
+
+$ git lfs unlock assets/image.png
+Unlocked assets/image.png
+
+$ git lfs locks
+assets/image.png    ppremk  ID:1401911

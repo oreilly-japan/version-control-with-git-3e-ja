@@ -1,0 +1,16 @@
+## ======================================================================
+# /tmp内に作成
+$ mkdir superproject && cd superproject
+$ git init -b main
+Initialized empty Git repository in /tmp/superproject/.git/
+
+$ echo "hello from super project" > sp-readme.md
+$ git add sp-readme.md
+$ git commit -m "Initial commit"
+[main (root-commit) a5b6866] Initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 sp-readme.md
+
+$ git status
+On branch main
+nothing to commit, working tree clean

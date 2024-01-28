@@ -1,0 +1,84 @@
+## ======================================================================
+$ git log -2 30cc8d0
+commit 30cc8d0f147546d4dd77bf497f4dec51e7265bd8 (HEAD -> main, ...)
+Author: Junio C Hamano <gitster@pobox.com>
+Date:   Sat Jul 2 17:01:34 2022 -0700
+
+    A regression fix for 2.37
+
+    Signed-off-by: Junio C Hamano <gitster@pobox.com>
+
+commit 0f0bc2124b25476504e7215dc2af92d5748ad327
+Merge: e4a4b31577 4788e8b256
+Author: Junio C Hamano <gitster@pobox.com>
+Date:   Sat Jul 2 21:56:08 2022 -0700
+
+    Merge branch 'js/add-i-delete'
+
+    Rewrite of "git add -i" in C that appeared in Git 2.25 didn't
+    correctly record a removed file to the index, which was fixed.
+
+    * js/add-i-delete:
+      add --interactive: allow `update` to stage deleted files
+
+$ git log --pretty=short --abbrev-commit main~9..main~7
+
+commit be7935ed8b
+Author: Junio C Hamano <gitster@pobox.com>
+
+    Merged the open-eintr workaround for macOS
+
+commit 58d581c344
+Author: Elijah Newren <newren@gmail.com>
+
+    Documentation/RelNotes: improve release note for rename detection work
+
+$ git log --pretty=format:"%an was the author of commit %h, %ar with%nthe commit titled: [%s]%n" --abbrev-commit main~9..main~7
+
+Junio C Hamano was the author of commit be7935ed8b, 12 days ago with
+the commit titled: [Merged the open-eintr workaround for macOS]
+
+Elijah Newren was the author of commit 58d581c344, 12 days ago with
+the commit titled: [Documentation/RelNotes: improve release note for rename detection work]
+
+$ git log -1 -p 4fe86488
+commit 4fe86488e1a550aa058c081c7e67644dd0f7c98e
+Author: Jon Loeliger <jdl@freescale.com>
+Date:   Wed Apr 23 16:14:30 2008 -0500
+
+    Add otherwise missing --strict option to unpack-objects summary.
+
+    Signed-off-by: Jon Loeliger <jdl@freescale.com>
+    Signed-off-by: Junio C Hamano <gitster@pobox.com>
+
+diff --git a/Documentation/git-unpack-objects.txt b/Documentation/git-unpack-objects.txt
+index 3697896..50947c5 100644
+--- a/Documentation/git-unpack-objects.txt
++++ b/Documentation/git-unpack-objects.txt
+@@ -8,7 +8,7 @@ git-unpack-objects - Unpack objects from a packed archive
+
+ SYNOPSIS
+ --------
+-'git-unpack-objects' [-n] [-q] [-r] <pack-file
++'git-unpack-objects' [-n] [-q] [-r] [--strict] <pack-file
+
+$ git log --pretty=short --stat main~9..main~7
+
+commit be7935ed8bff19f481b033d0d242c5d5f239ed50
+Author: Junio C Hamano <gitster@pobox.com>
+
+    Merged the open-eintr workaround for macOS
+
+Documentation/RelNotes/2.31.0.txt | 5 +++++
+1 file changed, 5 insertions(+)
+
+commit 58d581c3446cb616b216307d6b47539bccd494cf
+Author: Elijah Newren <newren@gmail.com>
+
+    Documentation/RelNotes: improve release note for rename detection work
+
+Documentation/RelNotes/2.31.0.txt | 2 +-
+1 file changed, 1 insertion(+), 1 deletion(-)
+
+## ======================================================================
+$ git show HEAD~2

@@ -1,0 +1,195 @@
+## ======================================================================
+$ mkdir myrepo && cd myrepo
+
+$ git status
+fatal: not a git repository (or any of the parent directories): .git
+
+$ tree .git
+.git [error opening dir]
+
+0 directories, 0 files
+
+$ git init -b main
+Initialized empty Git repository in /myrepo/.git/
+
+$ tree .git
+.git
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── info
+│　 └── exclude
+├── objects
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 └── tags
+
+8 directories, 17 files
+
+$ cat .git/HEAD
+ref: refs/heads/main
+
+$ cat .git/refs/heads/main
+cat: .git/refs/heads/main: No such file or directory
+
+$ echo "Hello Git" > file
+$ tree .git
+.git
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── info
+│　 └── exclude
+├── objects
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 └── tags
+
+8 directories, 17 files
+
+$ git add file
+$ tree .git
+.git
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── index
+├── info
+│　 └── exclude
+├── objects
+│　 ├── 9f
+│　 │　 └── 4d96d5b00d98959ea9960f069585ce42b1349a
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 └── tags
+
+9 directories, 19 files
+
+$ cat .git/index
+DIRCb�Fx��
+b�Fx��
+
+��I���
+��������B�4�file��(���[�o+�fu���\%
+
+# オブジェクトのタイプをチェックする
+$ git cat-file -t 9f4d96
+blob
+
+# オブジェクトのコンテンツをチェックする
+$ git cat-file -p 9f4d96
+Hello Git
+
+$ git commit -m "Initial commit"
+[main (root-commit) 75f501d] Initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file
+
+
+# tree .gitを実行してオブジェクトストアの変化を調べる
+$ tree .git
+.git
+├── COMMIT_EDITMSG
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── index
+├── info
+│　 └── exclude
+├── logs
+│　 ├── HEAD
+│　 └── refs
+│　　　　└── heads
+│　　　　　　 └── main
+├── objects
+│　 ├── 16
+│　 │　 └── b2356b798a3bfa903c9a54dc608282f4394e2b
+│　 ├── 9f
+│　 │　 └── 4d96d5b00d98959ea9960f069585ce42b1349a
+│　 ├── 75
+│　 │　 └── f501da811525b594f2240e015eeebeed388042
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 │　 └── main
+　　 └── tags
+
+14 directories, 25 files
+
+# コミットオブジェクトの中身を調べる
+$ git cat-file -p 75f501
+tree 16b2356b798a3bfa903c9a54dc608282f4394e2b
+author Prem Kumar Ponuthorai <ppremk@gmail.com> 1658662758 +0200
+committer Prem Kumar Ponuthorai <ppremk@gmail.com> 1658662758 +0200
+
+Initial commit
+
+# ツリーオブジェクトの中身を調べる
+$ git cat-file -p 16b23
+100644 blob 9f4d96d5b00d98959ea9960f069585ce42b1349a file
+
+$ cat .git/refs/heads/main
+75f501da811525b594f2240e015eeebeed388042

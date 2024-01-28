@@ -1,0 +1,4 @@
+## ======================================================================
+$ wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.37.0.tar.gz
+$ tar xzf git-2.37.0.tar.gz
+$ cd git-2.37.0

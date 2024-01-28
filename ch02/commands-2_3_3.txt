@@ -1,0 +1,18 @@
+## ======================================================================
+$ git ls-files -s
+100644 3b18e512dba79e4c8300dd08aeb37f8e728b8dad 0       hello.txt
+
+$ git write-tree
+68aba62e560c0ebc3396e8ae9335232cd93a3f60
+
+$ find .git/objects
+.git/objects
+.git/objects/68
+.git/objects/68/aba62e560c0ebc3396e8ae9335232cd93a3f60
+.git/objects/pack
+.git/objects/3b
+.git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad
+.git/objects/info
+
+$ git cat-file -p 68aba6
+100644 blob 3b18e512dba79e4c8300dd08aeb37f8e728b8dad    hello.txt

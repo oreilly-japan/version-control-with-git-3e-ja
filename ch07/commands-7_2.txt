@@ -1,0 +1,129 @@
+## ======================================================================
+$ mkdir /tmp/diff_example
+$ cd /tmp/diff_example
+
+$ git init -b main
+Initialized empty Git repository in /tmp/diff_example/.git/
+
+$ echo "foo" > file1
+$ echo "bar" > file2
+
+$ git add file1 file2
+
+$ git commit -m "Add file1 and file2"
+[main (root-commit) 7915072] Add file1 and file2
+ 2 files changed, 2 insertions(+)
+ create mode 100644 file1
+ create mode 100644 file2
+
+$ echo "quux" > file1
+
+# インデックスと作業ディレクトリの差分
+$ git diff
+diff --git a/file1 b/file1
+index 257cc56..d90bda0 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++quux
+
+# HEADと作業ディレクトリの差分
+$ git diff HEAD
+diff --git a/file1 b/file1
+index 257cc56..d90bda0 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++quux
+
+# HEADとインデックスの差分（まだ両者は同じなので差分は表示されない）
+$ git diff --cached
+$
+
+$ git add file1
+
+$ git status
+On branch main
+Changes to be committed:
+    (use "git restore --staged <file>..." to unstage)
+        modified:   file1
+
+# インデックスと作業ディレクトリの差分
+$ git diff
+
+# HEADと作業ディレクトリの差分
+$ git diff HEAD
+diff --git a/file1 b/file1
+index 257cc56..d90bda0 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++quux
+
+# HEADとインデックスの差分
+$ git diff --cached
+diff --git a/file1 b/file1
+index 257cc56..d90bda0 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++quux
+
+$ echo "baz" > file1
+
+# インデックスと作業ディレクトリの差分
+$ git diff
+diff --git a/file1 b/file1
+index d90bda0..7601807 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-quux
++baz
+
+# HEADと作業ディレクトリの差分
+$ git diff HEAD
+diff --git a/file1 b/file1
+index 257cc56..7601807 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++baz
+
+# HEADとインデックスの差分
+$ git diff --cached
+diff --git a/file1 b/file1
+index 257cc56..d90bda0 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++quux
+
+$ git commit -m "quux for the win"
+[main 27f006d] quux for the win
+1 file changed, 1 insertion(+), 1 deletion(-)
+
+# 1つ前のHEADバージョンと現在のHEADバージョンの差分
+$ git diff HEAD^ HEAD
+diff --git a/file1 b/file1
+index 257cc56..d90bda0 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-foo
++quux
+
+$ git diff
+diff --git a/file1 b/file1
+index d90bda0..7601807 100644
+--- a/file1
++++ b/file1
+@@ -1 +1 @@
+-quux
++baz

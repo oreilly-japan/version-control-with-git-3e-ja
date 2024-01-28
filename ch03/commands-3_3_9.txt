@@ -1,0 +1,60 @@
+## ======================================================================
+$ git branch -d branch-name
+
+## ======================================================================
+$ git checkout main
+Switched to branch "main"
+
+$ git branch -d bugs/pr-3
+error: The branch 'bugs/pr-3' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D bugs/pr-3'.
+
+$ git show-branch
+! [bugs/pr-1] Fix Problem Report 1
+ ! [bugs/pr-2] Added Bob's fixes.
+  ! [bugs/pr-3] Added a bug fix for pr-3.
+   ! [dev] Started developing NewStuff
+    * [main] Added Bob's fixes..
+-----
+  +   [bugs/pr-3] Added a bug fix for pr-3.
+   +  [dev] Started developing NewStuff
+   +  [dev^] Improve the new development
+   +  [dev~2] Start some new development.
++     [bugs/pr-1] Fix Problem Report 1
+++++* [bugs/pr-2] Added Bob's fixes.
+
+$ git merge bugs/pr-3
+Updating 7933438..401b78d
+Fast forward
+ NewStuff |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+$ git show-branch
+! [bugs/pr-1] Fix Problem Report 1
+ ! [bugs/pr-2] Added Bob's fixes.
+  ! [bugs/pr-3] Added a bug fix for pr-3.
+   ! [dev] Started developing NewStuff
+    * [main] Added a bug fix for pr-3.
+-----
+  + * [bugs/pr-3] Added a bug fix for pr-3.
+   +  [dev] Started developing NewStuff
+   +  [dev^] Improve the new development
+   +  [dev~2] Start some new development.
++     [bugs/pr-1] Fix Problem Report 1
+++++* [bugs/pr-2] Added Bob's fixes.
+
+$ git branch -d bugs/pr-3
+Deleted branch bugs/pr-3.
+
+$ git show-branch
+! [bugs/pr-1] Fix Problem Report 1
+ ! [bugs/pr-2] Added Bob's fixes.
+  ! [dev] Started developing NewStuff
+   * [main] Added a bug fix for pr-3.
+----
+   * [main] Added a bug fix for pr-3.
+  +  [dev] Started developing NewStuff
+  +  [dev^] Improve the new development
+  +  [dev~2] Start some new development.
++    [bugs/pr-1] Fix Problem Report 1
++++* [bugs/pr-2] Added Bob's fixes.

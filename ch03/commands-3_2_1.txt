@@ -1,0 +1,10 @@
+## ======================================================================
+$ git init --initial-branch=branch-name
+
+$ git init -b branch-name
+
+$ git config --global init.defaultBranch branch-name
+
+$ git branch -m old-branch-name new-branch-name
+
+$ git show-branch 'bug/*'

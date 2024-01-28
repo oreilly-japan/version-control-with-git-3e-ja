@@ -1,0 +1,220 @@
+## ======================================================================
+$ git format-patch -o /tmp/patches main~5
+/tmp/patches/0001-Add-B.patch
+/tmp/patches/0002-Add-C.patch
+/tmp/patches/0003-Add-D.patch
+/tmp/patches/0004-Add-X.patch
+/tmp/patches/0005-Add-Y.patch
+/tmp/patches/0006-Add-Z.patch
+/tmp/patches/0007-Add-F.patch
+
+$ cd /tmp
+$ git clone patch-demo am
+Cloning into 'am'...
+done.
+$ cd am
+
+# git log --onelineコマンドで最初のコミットのコミットIDを調べ、
+# HEADを最初のコミットに変更する。
+$ git reset --hard 11200ff
+
+# パッチ適用のために上流から切断する
+# （かならずしも必要ではないが、そうしない理由があるだろうか？）
+$ git remote remove origin
+$ git log --oneline
+11200ff (HEAD -> main) Add A
+
+$ git am /tmp/patches/*
+Applying: Add B
+Applying: Add C
+Applying: Add D
+Applying: Add X
+error: patch failed: file:1
+error: file: patch does not apply
+Patch failed at 0004 Add X
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+$ git show-branch --more=10
+[main] Add D
+[main^] Add C
+[main~2] Add B
+[main~3] Add A
+
+$ git am --show-current-patch=diff
+---
+ file | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/file b/file
+index 35d242b..7f9826a 100644
+--- a/file
++++ b/file
+@@ -1,2 +1,3 @@
+ A
+ B
++X
+--
+2.37.0
+
+$ cat file
+A
+B
+C
+D
+
+$ git am --skip
+Applying: Add Y
+error: patch failed: file:1
+error: file: patch does not apply
+Patch failed at 0005 Add Y
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+# コミットAを追加したあとの状態にリセットする
+$ git reset --hard main~3
+HEAD is now at 11200ff Add A
+
+# .git/rebase-applyディレクトリを削除する
+$ rm -rf .git/rebase-apply/
+
+$ git am /tmp/patches/0001-Add-B.patch
+Applying: Add B
+
+$ git am /tmp/patches/0004-Add-X.patch
+Applying: Add X
+
+$ git show 35d242b
+A
+B
+
+# 必要なら「git am」の一時的なコンテキスト情報を捨てる。
+$ rm -rf .git/rebase-apply/
+
+# 「git log」でコミットAのコミットIDを探す
+# 私たちの場合は11200ffだったのでそこにHEADをリセットする
+# あなたのコミットIDは違う値になっているはずだ
+$ git reset --hard 11200ff
+HEAD is now at 11200ff Add A
+
+$ git show-branch --more=10
+[main] Add A
+
+$ git am -3 /tmp/patches/*
+Applying: Add B
+Applying: Add C
+Applying: Add D
+Applying: Add X
+Using index info to reconstruct a base tree...
+M   file
+Falling back to patching base and 3-way merge...
+Auto-merging file
+CONFLICT (content): Merge conflict in file
+error: Failed to merge in the changes.
+Patch failed at 0004 Add X
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+$ git status
+On branch main
+You are in the middle of an am session.
+  (fix conflicts and then run "git am --continue")
+  (use "git am --skip" to skip this patch)
+  (use "git am --abort" to restore the original branch)
+
+Unmerged paths:
+  (use "git restore --staged <file>..." to unstage)
+  (use "git add <file>..." to mark resolution)
+    both modified:   file
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ cat file
+A
+B
+<<<<<<< HEAD
+C
+D
+=======
+X
+>>>>>>> Add X
+
+# エディタで、fileに含まれているコンフリクトを解決する
+$ vi file
+
+$ cat file
+A
+B
+C
+D
+X
+
+$ git am -3 --continue
+Applying: Add X
+You still have unmerged paths in your index.
+You should 'git add' each file with resolved conflicts to mark them as such.
+You might run `git rm` on a file to accept "deleted by them" for it.
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+$ git add file
+$ git am -3 --continue
+Applying: Add X
+Applying: Add Y
+Using index info to reconstruct a base tree...
+M   file
+Falling back to patching base and 3-way merge...
+Auto-merging file
+Applying: Add Z
+Using index info to reconstruct a base tree...
+M   file
+Falling back to patching base and 3-way merge...
+Auto-merging file
+Applying: Add F
+
+$ cat file
+A
+B
+C
+D
+X
+Y
+Z
+F
+
+$ git show-branch --more=10
+[main] F
+[main^] Z
+[main~2] Y
+[main~3] X
+[main~4] D
+[main~5] C
+[main~6] B
+[main~7] A
+
+$ git log --graph --oneline
+* 37e3f43 (HEAD -> main) Add F
+* 3a2d1df Add Z
+* 3484b10 Add Y
+* f18328e Add X
+* 68cf338 Add D
+* a9e1a1b Add C
+* 06d2fad Add B
+* 11200ff Add A
+
+# パッチを適用したのは最初にサンプルをセットアップした翌日
+$ git log --pretty=fuller -1 a9e1a1b
+commit a9e1a1bad95082f597b781bb4b22694eaacd9698
+Author:     Prem Kumar Ponuthorai <ppremk@gmail.com>
+AuthorDate: Wed Jan 5 12:48:32 2022 +0100
+Commit:     Prem Kumar Ponuthorai <ppremk@gmail.com>
+CommitDate: Thu Jan 6 16:30:03 2022 +0100
+
+    Add C

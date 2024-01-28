@@ -1,0 +1,115 @@
+## ======================================================================
+$ cat hello
+hello
+<<<<<<< HEAD
+worlds
+=======
+world
+>>>>>>> alt
+Yay!
+
+## ======================================================================
+$ git diff
+diff --cc hello
+index e63164d,562080a..0000000
+--- a/hello
++++ b/hello
+@@@ -1,3 -1,3 +1,7 @@@
+  hello
+++<<<<<<< HEAD
+ +worlds
+++=======
++ world
+++>>>>>>> alt
+  Yay!
+
+$ git diff HEAD
+diff --git a/hello b/hello
+index e63164d..1f2f61c 100644
+--- a/hello
++++ b/hello
+@@ -1,3 +1,7 @@
+ hello
++<<<<<<< HEAD
+ worlds
++=======
++world
++>>>>>>> alt
+ Yay!
+
+$ git diff MERGE_HEAD
+diff --git a/hello b/hello
+index 562080a..1f2f61c 100644
+--- a/hello
++++ b/hello
+@@ -1,3 +1,7 @@
+ hello
++<<<<<<< HEAD
++worlds
++=======
+ world
++>>>>>>> alt
+ Yay!
+
+$ cat hello
+hello
+worldly ones
+Yay!
+
+$ git diff
+diff --cc hello
+index e63164d,562080a..0000000
+--- a/hello
++++ b/hello
+@@@ -1,3 -1,3 +1,3 @@@
+  hello
+- worlds
+ -world
+++worldly ones
+  Yay!
+
+$ cat hello
+hello
+world
+Yay!
+
+$ git diff
+diff --cc hello
+index e63164d,562080a..0000000
+--- a/hello
++++ b/hello
+
+## ======================================================================
+$ git log --merge --left-right -p
+
+commit < 0d7dfb7f23cd5f4d6debedc27f7f85d5c72d5423 (HEAD -> main)
+Author: Prem Kumar Ponuthorai  <ppremk@demo.com>
+Date:   Thu Sep 2 23:10:35 2021 +0200
+
+    All worlds
+
+diff --git a/hello b/hello
+index ce01362..e63164d 100644
+--- a/hello
++++ b/hello
+@@ -1 +1,3 @@
+hello
++worlds
++Yay!
+
+commit > 84e436cd3353739c67fd0fce36e18fc42b31d153 (alt)
+Author: Prem Kumar Ponuthorai  <ppremk@demo.com>
+Date:   Thu Sep 2 23:09:07 2021 +0200
+
+    One world
+
+diff --git a/hello b/hello
+index ce01362..562080a 100644
+--- a/hello
++++ b/hello
+@@ -1 +1,3 @@
+hello
++world
++Yay!
+
+$ git log --merge --left-right -p hello

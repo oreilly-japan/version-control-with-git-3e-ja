@@ -1,0 +1,6 @@
+## ======================================================================
+$ git config --global user.name "Jon Loeliger"
+$ git config --global user.email "jdl@example.com"
+
+## ======================================================================
+$ git commit -m "log message" --author="Jon Loeliger <jdl@example.com>"

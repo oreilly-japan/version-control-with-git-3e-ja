@@ -1,0 +1,10 @@
+## ======================================================================
+$ git show 0c071e1d > file2
+
+$ git branch recovered 66919fae
+$ git show-branch
+* [main] Add some foo
+ ! [recovered] Add some bar
+--
+ + [recovered] Add some bar
+*+ [main] Add some foo

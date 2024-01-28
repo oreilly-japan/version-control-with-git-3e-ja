@@ -1,0 +1,20 @@
+## ======================================================================
+desktop$ cd /tmp
+desktop$ git clone ssh://example.com/tmp/Depot/my_website.git
+Initialize my_website/.git
+Initialized empty Git repository in /tmp/my_website/.git/
+jdl@example.com's password:
+remote: Counting objects: 27, done.
+Receiving objects: 100% (27/27), done.objects:   3% (1/27)
+Resolving deltas: 100% (7/7), done.
+remote: Compressing objects: 100% (23/23), done.
+remote: Total 27 (delremote: ta 7), reused 0 (delta 0)
+
+desktop$ git push
+jdl@example.com's password:
+Counting objects: 5, done.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 385 bytes, done.
+Total 3 (delta 1), reused 0 (delta 0)
+To ssh://example.com/tmp/Depot/my_website.git
+   55c15c8..451e41c  main -> main

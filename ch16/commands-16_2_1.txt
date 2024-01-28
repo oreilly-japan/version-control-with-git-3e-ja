@@ -1,0 +1,66 @@
+## ======================================================================
+$ git clone https://github.com/git/git.git
+Cloning into 'git'...
+remote: Counting objects: 126850, done.
+remote: Compressing objects: 100% (41033/41033), done.
+remote: Total 126850 (delta 93115), reused 117003 (delta 84141)
+Receiving objects: 100% (126850/126850), 27.56 MiB | 1.03 MiB/s, done.
+Resolving deltas: 100% (93115/93115), done.
+
+$ cd git
+$ git rev-list -n 1 --before="Jan 1, 2012 00:00:00" master
+0eddcbf1612ed044de586777b233caf8016c6e70
+
+$ git checkout 0eddcb
+Note: switching to '0eddcb'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 0eddcbf161 Add MYMETA.json to perl/.gitignore
+```
+
+<!--
+But is that really the right commit?
+-->
+しかし、これは本当に求めていたコミットなのだろうか。
+
+```bash
+$ git log -1 --pretty=fuller
+commit 0eddcbf1612ed044de586777b233caf8016c6e70
+Author:     Jack Nagel <jacknagel@gmail.com>
+AuthorDate: Wed Dec 28 22:42:05 2011 -0600
+Commit:     Junio C Hamano <gitster@pobox.com>
+CommitDate: Thu Dec 29 13:08:47 2011 -0800
+
+Add MYMETA.json to perl/.gitignore
+...
+
+$ git rev-list -n 1 --before="Jan 1, 2012 00:00:00" master
+0eddcbf1612ed044de586777b233caf8016c6e70
+
+$ git rev-list -n 1 --before="Jan 1, 2012" master
+5c951ef47bf2e34dbde58bda88d430937657d2aa
+
+$ git log -1 --pretty=fuller 5c951ef
+commit 5c951ef47bf2e34dbde58bda88d430937657d2aa
+Author:     Clemens Buchacher <drizzd@aon.at>
+AuthorDate: Sat Dec 31 12:50:56 2011 +0100
+Commit:     Junio C Hamano <gitster@pobox.com>
+CommitDate: Sun Jan 1 01:18:53 2012 -0800
+
+Documentation: read-tree --prefix works with existing subtrees
+...
+

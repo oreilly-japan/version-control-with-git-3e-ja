@@ -1,0 +1,78 @@
+## ======================================================================
+$ git show
+commit 0ba161a94e03ab1e2b27c2e65e4cbef476d04f5d
+Author: Jon Loeliger <jdl@example.com>
+Date:   Thu Jun 26 15:14:03 2008 -0500
+
+Initial speech
+
+diff --git a/speech.txt b/speech.txt
+new file mode 100644
+index 0000000..310bcf9
+--- /dev/null
++++ b/speech.txt
+@@ -0,0 +1,5 @@
++Three score and seven years ago
++our fathers brought forth on this continent,
++a new nation, conceived in Liberty,
++and dedicated to the proposition
++that all women are created equal.
+
+$ git show-branch --more=5
+[main] Fix timeline typo
+[main^] Initial speech
+
+# 必要なだけspeech.txtを編集する
+
+$ git diff
+diff --git a/speech.txt b/speech.txt
+index 310bcf9..7328a76 100644
+--- a/speech.txt
++++ b/speech.txt
+@@ -1,5 +1,5 @@
+-Three score and seven years ago
++Four score and seven years ago
+ our fathers brought forth on this continent,
+ a new nation, conceived in Liberty,
+ and dedicated to the proposition
+-that all women are created equal.
++that all women and men are created equal.
+
+$ git add speech.txt
+$ git commit --amend
+
+# 必要なら“Initial speech”というコミットメッセージを編集する。
+# この例では、少しだけ書き換えてある。
+
+$ git show-branch --more=5
+[main] Initial speech that sounds familiar.
+
+$ git show
+commit 47d849c61919f05da1acf983746f205d2cdb0055
+Author: Jon Loeliger <jdl@example.com>
+Date:   Thu Jun 26 15:14:03 2008 -0500
+
+Initial speech that sounds familiar.
+
+diff --git a/speech.txt b/speech.txt
+new file mode 100644
+index 0000000..7328a76
+--- /dev/null
++++ b/speech.txt
+@@ -0,0 +1,5 @@
++Four score and seven years ago
++our fathers brought forth on this continent,
++a new nation, conceived in Liberty,
++and dedicated to the proposition
++that all women and men are created equal.
+
+$ git commit --amend --author "Bob Miller <kbob@example.com>"
+# ...何もせずにエディタをクローズする...
+
+$ git log
+commit 0e2a14f933a3aaff9edd848a862e783d986f149f
+Author: Bob Miller <kbob@example.com>
+Date:   Thu Jun 26 15:14:03 2008 -0500
+
+Initial speech that sounds familiar.
+

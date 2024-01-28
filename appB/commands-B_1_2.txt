@@ -1,0 +1,8 @@
+## ======================================================================
+$ sudo emerge --ask --verbose dev-vcs/git
+
+$ sudo pacman -S git
+
+$ sudo yum install git
+
+$ sudo dnf install git

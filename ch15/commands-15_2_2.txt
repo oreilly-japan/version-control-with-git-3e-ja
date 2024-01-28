@@ -1,0 +1,272 @@
+## ======================================================================
+# /tmp内に作成
+$ mkdir superproject && cd superproject
+$ git init -b main
+Initialized empty Git repository in /tmp/superproject/.git/
+
+$ echo "hello from super project" > sp-readme.md
+$ git add sp-readme.md
+$ git commit -m "Initial commit"
+[main (root-commit) 3689ee7] Initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 sp-readme.md
+
+$ git status
+On branch main
+nothing to commit, working tree clean
+
+## ======================================================================
+# 実際に試す場合、https://github.com/ppremk/example-submodule-template
+# のテンプレートリポジトリをもとにあなたのGitHubアカウントに新しいリポジトリを
+# 作成していただきたい。左上の“Use this template”という緑のボタンをクリック
+# すると、リポジトリのコピーを作れる。
+
+# GitHubのあなたのリポジトリのクローンURLから既存サブモジュールを追加する
+
+$ git submodule add https://github.com/ppremk/example-submodule.git
+Cloning into '/tmp/superproject/example-submodule'...
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (4/4), done.
+
+$ ls
+example-submodule sp-readme.md
+
+$ git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitmodules
+        new file:   example-submodule
+
+# サブモジュールのコミットに進む
+
+$ git commit -m "Add submodule"
+[main ecc6142] Add submodule
+ 2 files changed, 4 insertions(+)
+ create mode 100644 .gitmodules
+ create mode 160000 example-submodule
+
+## ======================================================================
+# 先ほどのリポジトリのベアリポジトリバージョンを作る
+# リポジトリのクローンから変更をプッシュできるようになる
+$ cd ..
+$ git clone --bare /tmp/superproject /tmp/superproject-upstream
+Cloning into bare repository '/tmp/superproject-upstream'...
+done.
+
+# サンプルサブモジュールを持つ新しい上流リポジトリのクローンを作成する
+$ git clone /tmp/superproject-upstream superproject-clone-1
+Cloning into 'superproject-clone -1'...
+done.
+
+# あとのデモのためにもう1つ新しいクローンを作る
+$ git clone /tmp/superproject-upstream superproject-clone-2
+Cloning into 'superproject-clone -2'...
+Done.
+
+$ cd superproject-clone-1
+$ ls
+example-submodule sp-readme.md
+
+$ cd example-submodule && ls
+$
+
+$ cd ..
+$ git submodule update --init
+Submodule 'example-submodule' (https://github.com/ppremk/example-submodule.git) 
+registered for path
+  'example-submodule'
+Cloning into '/tmp/superproject-clone/example-submodule'...
+Submodule path 'example-submodule': checked out '3b294591ab02a849bdc29f545658cd74f6832bcb'
+
+$ cd example-submodule && ls
+LICENSE  README.md
+
+$ git submodule update --init --recursive
+
+$ git clone --recurse-submodules /tmp/superproject-upstream superproject-clone
+
+## ======================================================================
+$ pwd
+/tmp/app2
+
+$ git submodule init
+Submodule 'git' (https://github.com/git/git.git) registered for path 'git'
+
+$ cat .git/config
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = false
+        logallrefupdates = true
+[remote "origin"]
+        url = /tmp/myapp
+        fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+        remote = origin
+        merge = refs/heads/main
+[submodule "git"]
+        active = true
+        url = https://github.com/git/git.git
+
+# サブモジュールの独自クローンを参照するようにしたときに必要なら
+# サブモジュールディレクトリを削除して強制的に新しいクローンを作成できる
+$ pwd
+/tmp/app2
+
+$ rm -rf git
+
+$ git submodule update
+Cloning into '/tmp/app2/git'...
+Submodule path 'git': checked out '4e2a4d1dd44367d7783f33b169698f2930ff13c0'
+
+## ======================================================================
+$ pwd
+/tmp/superproject-clone-1
+
+$ cd example-submodule
+$ git status
+HEAD detached at 3b29459
+nothing to commit, working tree clean
+
+$ git branch -a
+* (HEAD detached at 3b29459)
+  main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+$ pwd
+/tmp/superproject-clone-1/example-submodule
+
+$ git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+
+$ echo "Add new submodule file" > new-submodule-file.md
+$ git add new-submodule-file.md
+$ git commit -m "Add new submodule file"
+[main 03c93dc] Add new submodule file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 new-submodule-file.md
+
+$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+
+$ git push
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 355 bytes | 355.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/ppremk/example-submodule.git
+   3b29459..03c93dc  main -> main
+
+$ cd ..
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   example-submodule (new commits)
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git config --local status.submoduleSummary true
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   example-submodule (new commits)
+
+Submodules changed but not updated:
+
+* example-submodule 3b29459...03c93dc (1):
+  > Add new submodule file
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git add example-submodule
+$ git commit -m "Add new submodule changes"
+[main e044d76] Add new submodule changes
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git push
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 330 bytes | 330.00 KiB/s, done.
+Total 2 (delta 0), reused 0 (delta 0), pack-reused 0
+To /tmp/superproject-upstream
+   ecc6142..e044d76  main -> main
+
+## ======================================================================
+$ pwd
+/tmp/superproject
+
+$ git submodule update --remote
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), 335 bytes | 111.00 KiB/s, done.
+From https://github.com/ppremk/example-submodule
+   3b29459..03c93dc  main       -> origin/main
+Submodule path 'example-submodule': checked out '03c93dc48b60829baed35f8f78959a41b89dd832'
+
+$ cd example-submodule && ls
+LICENSE      README.md             new-submodule-file.md
+
+## ======================================================================
+# 今回は第2のクローンリポジトリに移動する
+$ pwd
+/tmp/superproject-clone-2
+
+$ git pull
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 2 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (2/2), 310 bytes | 310.00 KiB/s, done.
+From /tmp/superproject-upstream
+   ecc6142..e044d76  main       -> origin/main
+Updating ecc6142..e044d76
+Fast-forward
+ example-submodule | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ cd example-submodule && ls
+$
+
+$ cd ..
+$ git submodule update --init --recursive
+Submodule 'example-submodule' (https://github.com/ppremk/example-submodule.git) registered for...
+Cloning into '/tmp/superproject-clone-2/example-submodule'...
+Submodule path 'example-submodule': checked out '03c93dc48b60829baed35f8f78959a41b89dd832'
+
+$ cd example-submodule && ls
+LICENSE      README.md             new-submodule-file.md
+
+# まず、スーパープロジェクトのGit設定ファイル(.git/config)に
+# サブモジュールの新しい上流URLを反映させる
+$ git submodule sync --recursive
+$ git submodule update --init --recursive
+
+## ======================================================================
+$ git checkout --recurse-submodules <branch-name>
+
+$ git checkout <branch-name>
+$ git submodule update --recursive

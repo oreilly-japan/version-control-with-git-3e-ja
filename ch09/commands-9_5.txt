@@ -1,0 +1,160 @@
+## ======================================================================
+$ mkdir /tmp/reset
+$ cd /tmp/reset
+$ git init -b main
+Initialized empty Git repository in /tmp/reset/.git/
+
+$ echo Do > main_file
+
+$ git add main_file
+
+$ git commit -m "Do"
+[main (root-commit) d8789aa] Do
+ 1 file changed, 1 insertion(+)
+ create mode 100644 main_file
+
+$ echo Fa > file_1
+$ git add file_1
+$ git commit -m "Fa"
+[main cf6315c] Fa
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file_1
+
+$ ls
+file_1    main_file
+
+$ git log --oneline
+cf6315c (HEAD -> main) Fa
+d8789aa Do
+
+$ echo Mi > file_2
+$ git add file_2
+
+$ git status
+On branch main
+Changes to be committed:
+   (use "git restore --staged <file>..." to unstage)
+         new file:   file_2
+
+$ git reset --soft HEAD^
+
+$ git log --oneline
+d8789aa (HEAD -> main) Do
+
+# ディレクトリ内のファイル
+$ ls
+file_1    file_2    main_file
+
+# git reset --soft HEAD^のあとにgit statusを実行すると
+# インデックスにはfile_1とfile_2の両方がある
+$ git status
+On branch main
+Changes to be committed:
+   (use "git restore --staged <file>..." to unstage)
+         new file:   file_1
+         new file:   file_2
+
+# file_1とfile_2で新しいコミットを作る
+$ git commit -m "Fa and Mi"
+[main 0c8a4ba] Fa and Mi
+ 2 files changed, 2 insertions(+)
+ create mode 100644 file_1
+ create mode 100644 file_2
+
+$ git log --oneline
+0c8a4ba (HEAD -> main) Fa and Mi
+d8789aa Do
+
+$ echo Re > file_3
+$ echo So > file_4
+
+# --mixedはgit resetのデフォルトオプションなので
+# 明示的にオプションを指定しなくてよい
+$ git reset HEAD^
+
+$ git log --oneline
+d8789aa (HEAD -> main) Do
+
+# ディレクトリ内のファイル
+$ ls
+file_1    file_2    file_3    file_4    main_file
+
+# git reset HEAD^のあとにgit statusを実行すると
+# 作業ディレクトリの未追跡ファイルfile_1からfile_4が表示される
+$ git status
+On branch main
+Untracked files:
+(use "git add <file>..." to include in what will be committed)
+      file_1
+      file_2
+      file_3
+      file_4
+
+# コンテンツに基づいてコミット履歴に論理的な順序が反映されるように
+# ファイルを1つずつコミットする
+$ git add file_3
+$ git commit -m "Re - content from file_3"
+[main 61e676f] Re - content from file_3
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file_3
+
+$ git add file_2
+$ git commit -m "Mi - content from file_2"
+[main 4ecc185] Mi - content from file_2
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file_2
+
+$ git add file_1
+$ git commit -m "Fa - content from file_1"
+[main 4d72acb] Fa - content from file_1
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file_1
+
+$ git add file_4
+$ git commit -m "So - content from file_4"
+[main 3ab8f23] So - content from file_4
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file_4
+
+$ git log --oneline
+3ab8f23 (HEAD -> main) So - content from file_4
+4d72acb Fa - content from file_1
+4ecc185 Mi - content from file_2
+61e676f Re - content from file_3
+d8789aa Do
+
+$ git log --oneline
+3ab8f23 (HEAD -> main) So - content from file_4
+4d72acb Fa - content from file_1
+4ecc185 Mi - content from file_2
+61e676f Re - content from file_3
+d8789aa Do
+
+$ git reset --hard HEAD~4
+HEAD is now at d8789aa Do
+
+$ git log --oneline
+d8789aa (HEAD -> main) Do
+
+# ディレクトリ内のファイル
+$ ls
+main_file
+
+# git reset --hard HEAD~4のあとにgit statusを実行すると
+# インデックスと作業ディレクトリはmain_fileがコミットされた直後の状態を
+# 反映したものになる
+$ git status
+On branch main
+nothing to commit, working tree clean
+
+# 新しいコンテンツとファイル名で新しいコミットを作る
+$ echo "Do Re Mi Fa So" > new_file
+$ git add new_file
+$ git commit -m "Add new_file"
+[main 46623d8] Add new_file
+  1 file changed, 1 insertion(+)
+  create mode 100644 new_file
+
+$ git log --oneline
+46623d8 (HEAD -> main) Add new_file
+d8789aa Do

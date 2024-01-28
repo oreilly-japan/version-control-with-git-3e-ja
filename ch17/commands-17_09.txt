@@ -1,0 +1,40 @@
+## ======================================================================
+$ git log --follow file
+
+$ git log --follow --name-only file
+
+$ mkdir /tmp/moved-file
+$ cd /tmp/moved-file
+$ git init -b main
+Initialized empty Git repository in /tmp/moved-file/.git/
+
+$ mkdir foo
+$ touch foo/a
+$ git add foo/a
+$ git commit -m "First a in foo"
+[main (root-commit) 1b4fbff] First a in foo
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 foo/a
+
+$ mkdir bar
+$ git mv foo/a bar/a
+$ git commit -m "Move foo/a to bar/a"
+[main 00229c3] Move foo/a to bar/a
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename {foo => bar}/a (100%)
+
+$ git log --oneline bar/a
+00229c3 (HEAD -> main) Move foo/a to bar/a
+
+$ git log --oneline --follow bar/a
+00229c3 (HEAD -> main) Move foo/a to bar/a
+1b4fbff First a in foo
+
+$ git log --oneline foo/a
+fatal: ambiguous argument 'foo/a': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+$ git log --oneline -- foo/a
+00229c3 (HEAD -> main) Move foo/a to bar/a
+1b4fbff First a in foo

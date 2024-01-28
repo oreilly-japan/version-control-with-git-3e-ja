@@ -1,0 +1,218 @@
+## ======================================================================
+$ mkdir ~/my_website
+$ cd ~/my_website
+$ echo 'My awesome website!' > index.html
+
+## ======================================================================
+$ git init -b main
+
+Initialized empty Git repository in ../my_website/.git/
+
+## ======================================================================
+$ git init -b main ~/my_website
+
+Initialized empty Git repository in ../my_website/.git/
+
+$ cd ~/my_website
+$ echo 'My awesome website!' > index.html
+
+## ======================================================================
+$ git add index.html
+
+## ======================================================================
+$ git add .
+
+## ======================================================================
+$ git status
+
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+     new file:   index.html
+
+## ======================================================================
+$ git commit -m "Initial contents of my_website"
+
+[main (root-commit) c149e12] Initial contents of my_website
+ 1 file changed, 1 insertion(+)
+ create mode 100644 index.html
+
+## ======================================================================
+# bash、zsh
+$ export GIT_EDITOR=vim
+
+# tcsh
+$ setenv GIT_EDITOR emacs
+
+## ======================================================================
+$ git status
+
+On branch main
+nothing to commit, working tree clean
+
+## ======================================================================
+$ cd ~/my_website
+
+# index.htmlファイルを編集する
+
+$ cat index.html
+<html>
+<body>
+My website is awesome!
+</body>
+</html>
+
+$ git commit index.html -m 'Convert to HTML'
+[main 521edbe] Convert to HTML
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+## ======================================================================
+$ git commit --help
+
+NAME
+       git-commit - Record changes to the repository
+
+SYNOPSIS
+       git commit [-a | --interactive | --patch] [-s] [-v] [-u<mode>] [--amend]
+                  [--dry-run] [(-c | -C | --fixup | --squash) <commit>]
+                  [-F <file> | -m <msg>] [--reset-author] [--allow-empty]
+                  [--allow-empty-message] [--no-verify] [-e] [--author=<author>]
+                  [--date=<date>] [--cleanup=<mode>] [--[no-]status]
+                  [-i | -o] [--pathspec-from-file=<file> [--pathspec-file-nul]]
+                  [-S[<keyid>]] [--] [<pathspec>...]
+...
+
+## ======================================================================
+$ git log
+
+commit 521edbe1dd2ec9c6f959c504d12615a751b5218f (HEAD -> main)
+Author: Jon Loeliger <jdl@example.com>
+Date:   Mon Jul 4 12:01:54 2022 +0200
+
+     Convert to HTML
+
+commit c149e12e89a9c035b9240e057b592ebfc9c88ea4
+Author: Jon Loeliger <jdl@example.com>
+Date:   Mon Jul 4 11:58:36 2022 +0200
+
+     Initial contents of my_website
+
+## ======================================================================
+$ git log --oneline
+
+521edbe (HEAD -> main) Convert to HTML
+c149e12 Initial contents of my_website
+
+## ======================================================================
+$ git show c149e12e89a9c035b9240e057b592ebfc9c88ea4
+
+commit c149e12e89a9c035b9240e057b592ebfc9c88ea4
+Author: Jon Loeliger <jdl@example.com>
+Date:   Mon Jul 4 11:58:36 2022 +0200
+
+Initial contents of my_website
+
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000..6331c71
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1 @@
++My awesome website!
+
+## ======================================================================
+$ git show-branch --more=10
+
+[main] Convert to HTML
+[main^] Initial contents of my_website
+
+## ======================================================================
+$ git diff c149e12e89a9c035b9240e057b592ebfc9c88ea4 521edbe1dd2ec9c6f959c504d12615a751b5218f
+
+diff --git a/index.html b/index.html
+index 6331c71..8cfcb90 100644
+--- a/index.html
++++ b/index.html
+@@ -1 +1,5 @@
+-My awesome website!
++<html>
++<body>
+ My website is awesome!
++</body>
++</html>
+
+## ======================================================================
+$ cd ~/my_website
+$ ls
+adverts.html  index.html
+
+$ git rm adverts.html
+rm  'adverts.html'
+
+$ git commit -m "Remove adverts html"
+[main 97ff70a] Remove adverts html
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 adverts.html
+
+## ======================================================================
+$ cd ~/my_website/
+$ ls
+adverts.html  index.html
+$ git rm adverts.html
+rm 'adverts.html'
+$ git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    adverts.html
+
+$ ls
+index.html
+
+$ git restore --staged adverts.html
+$ ls
+index.html
+$ git status
+On branch main
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    adverts.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git restore --worktree adverts.html
+$ ls
+adverts.html  index.html
+
+$ git restore --staged --worktree adverts.html
+$ ls
+adverts.html  index.html
+$ git status
+On branch main
+nothing to commit, working tree clean
+
+$ rm adverts.html
+$ ls
+index.html
+$ git restore --worktree adverts.html
+$ ls
+adverts.html  index.html
+
+## ======================================================================
+$ mv foo.html bar.html
+$ git rm foo.html
+rm 'foo.html'
+
+$ git add bar.html
+
+## ======================================================================
+$ git mv foo.html bar.html
+
+$ git commit -m "Moved foo to bar"
+[main d1e37c8] Moved foo to bar
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename foo.html => bar.html (100%)

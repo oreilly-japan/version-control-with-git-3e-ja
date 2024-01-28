@@ -1,0 +1,125 @@
+## ======================================================================
+$ cd the-git-project
+# 何かの仕事で大量に編集をした
+
+# 優先度の高いワークフローによって中断
+# 今の仕事を取りやめ、新しい仕事に取りかからなければならない
+
+$ git stash push
+Saved working directory and index state WIP on main: 1En0v80 ...
+
+# 優先度の高い変更を編集
+# 変更をインデックスに追加してコミット
+
+# 一時退避した仕掛りの仕事を続行
+$ git stash pop
+
+$ git stash -m "WIP: Doing real work on my stuff"
+
+# ... 通常の開発プロセスを中断 ...
+
+# 現在のコンテキストを保存するための新ブランチを作成
+$ git checkout -b saved_state
+
+# 仕掛りの仕事を保存
+$ git add files
+$ git commit -m "Saved state"
+
+# 緊急更新のために前のブランチに戻る
+$ git checkout main
+
+# 緊急のバグフィックスを編集
+$ git add fixed-files
+$ git commit -m "Fix something."
+
+# 編集後の作業ディレクトリに先ほど保存したブランチのコンテキストを復元
+$ git checkout saved_state
+$ git reset --mixed HEAD^
+
+# ... 中断したところから作業を再開 ...
+
+$ git show-branch stash
+[stash] WIP on main: 3889def Some initial files.
+
+$ git stash drop
+Dropped refs/stash@{0} (7ec158448f301a4fb4f7cb567225ddb1af135bde)
+
+## ======================================================================
+$ mkdir /tmp/my-repo
+$ cd /tmp/my-repo
+$ git init -b main
+Initialized empty Git repository in /tmp/my-repo/.git/
+
+$ echo "hello" > file1
+$ git add file1
+$ git commit -m "Add file 1"
+[main (root-commit) 9841192] add file 1
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file1
+
+$ echo "Git" > file2
+$ git add file2
+$ git commit -m "Add file 2"
+[main 24d4b0a] add file 2
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file2
+
+$ ls
+file1  file2
+
+$ echo "some foo" >> file1
+
+$ git status
+On branch main
+Changes not staged for commit:
+   (use "git add <file>..." to update what will be committed)
+   (use "git restore -- <file>..." to discard changes in working directory)
+
+    modified:   file1
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git stash -m "Tinkered file1"
+Saved working directory and index state On main: Tinkered file1
+
+$ git commit --dry-run
+On branch main
+nothing to commit, working directory clean
+
+$ echo "some bar" >> file2
+
+$ git stash -m "Messed with file2"
+Saved working directory and index state On main: Messed with file2
+
+$ git stash list
+stash@{0}: On main: Messed with file2
+stash@{1}: On main: Tinkered file1
+
+$ echo "new" > file3
+
+# 新しい未追跡ファイルに対する一時退避は失敗する
+$ git stash -m "Add new untracked file3"
+No local changes to save
+
+# 新しい未追跡ファイルをスタッシュスタックに一時退避したければ-uオプションを
+# 追加する（「10.1.2 ユースケース：上流の変更による仕掛りの作業の更新」）
+$ git stash -u -m "Add new untracked file3"
+Saved working directory and index state On main: Add new untracked file3
+
+$ git stash list
+stash@{0}: On main: Add new untracked file3
+stash@{1}: On main: Messed with file2
+stash@{2}: On main: Tinkered file1
+
+$ git stash show stash@{1}
+ file2 |    1 +
+ 1 file changed, 1 insertion(+)
+
+$ git stash show -p stash@{1}
+diff --git a/file2 b/file2
+index 5664e30..265404f 100644
+--- a/file2
++++ b/file2
+@@ -1 +1,2 @@
+ git
++some bar

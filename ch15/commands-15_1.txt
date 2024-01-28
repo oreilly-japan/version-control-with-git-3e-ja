@@ -1,0 +1,62 @@
+## ======================================================================
+$ cd /tmp
+$ mkdir myapp
+$ cd myapp
+
+# 新しいスーパープロジェクトを作る
+$ git init -b main
+Initialized empty Git repository in /tmp/myapp/.git/
+
+$ echo hello > hello.txt
+
+$ git add hello.txt
+
+$ git commit -m 'first commit'
+[main (root-commit) 2f8e120] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hello.txt
+
+$ ls
+hello.txt
+
+# サブモジュールとしてGitのリポジトリをクローンする
+$ git submodule add https://github.com/git/git.git git
+Cloning into 'git'...
+remote: Enumerating objects: 329719, done.
+remote: Counting objects: 100% (338/338), done.
+remote: Compressing objects: 100% (156/156), done.
+remote: Total 329719 (delta 214), reused 271 (delta 182), pack-reused 329381
+Receiving objects: 100% (329719/329719), 194.04 MiB | 27.39 MiB/s, done.
+Resolving deltas: 100% (246495/246495), done.
+Updating files: 100% (4167/4167), done.
+
+$ ls
+git  hello.txt
+
+$ git add git
+
+$ git commit -m 'import git'
+[main 62079a5] import git
+ 2 files changed, 4 insertions(+)
+ create mode 100644 .gitmodules
+ create mode 160000 git
+
+$ git ls-tree HEAD
+100644 blob fc7f9429d5ca844b0a71bd9cc9062318eaea08bd .gitmodules
+160000 commit 4e2a4d1dd44367d7783f33b169698f2930ff13c0       git
+100644 blob ce013625030ba8dba906f756967f9e9ca394464a hello.txt
+
+$ cd /tmp
+
+$ git clone myapp app2
+Cloning into 'app2'...
+done.
+
+$ cd app2
+
+$ ls
+git  hello.txt
+
+# gitディレクトリは空である
+$ ls git
+$

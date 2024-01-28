@@ -1,0 +1,52 @@
+## ======================================================================
+$ cd /tmp
+$ git clone https://github.com/git/git.git
+
+Cloning into 'git'...
+remote: Counting objects: 129630, done.
+remote: Compressing objects: 100% (42078/42078), done.
+Receiving objects: 100% (129630/129630), 28.51 MiB | 1.20 MiB/s, done.
+remote: Total 129630 (delta 95231), reused 119366 (delta 85847)
+Resolving deltas: 100% (95231/95231), done.
+
+$ cd git
+
+$ git grep -i loeliger
+.mailmap:Jon Loeliger <jdl@jdl.com> <jdl@freescale.com>
+.mailmap:Jon Loeliger <jdl@jdl.com> <jdl@freescale.org>
+Documentation/gitcore-tutorial.txt:Here is an ASCII art by Jon Loeliger that illustrates how
+Documentation/revisions.txt:Here is an illustration, by Jon Loeliger.  Both commit nodes B
+Documentation/revisions.txt:Here are a handful of examples using the Loeliger illustration above,
+
+$ git grep jdl
+.mailmap:Jon Loeliger <jdl@jdl.com> <jdl@freescale.com>
+.mailmap:Jon Loeliger <jdl@jdl.com> <jdl@freescale.org>
+Documentation/technical/pack-heuristics.txt:    <jdl> What is a "thin" pack?
+
+# まだ/tmp/gitリポジトリ内にいる
+
+$ git grep -l git-grep
+.gitignore
+Documentation/RelNotes/1.5.3.6.txt
+Documentation/RelNotes/1.5.3.8.txt
+Documentation/RelNotes/1.6.3.txt
+Documentation/git-grep.txt
+Documentation/gitweb.conf.txt
+command-list.txt
+gitweb/gitweb.perl
+grep.c
+t/README
+t/perf/p4220-log-grep-engines.sh
+t/perf/p4221-log-grep-engines-fixed.sh
+t/perf/p7810-grep.sh
+t/perf/p7820-grep-engines.sh
+t/perf/p7821-grep-engines-fixed.sh
+
+# まだ/tmp/gitリポジトリ内にいる
+
+$ git grep -l git-grep -- Documentation
+Documentation/RelNotes/1.5.3.6.txt
+Documentation/RelNotes/1.5.3.8.txt
+Documentation/RelNotes/1.6.3.txt
+Documentation/git-grep.txt
+Documentation/gitweb.conf.txt

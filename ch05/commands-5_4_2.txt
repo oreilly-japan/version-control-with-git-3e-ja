@@ -1,0 +1,8 @@
+## ======================================================================
+# readyファイルを書き換え、「git add」してインデックスにステージング
+$ git add ready
+$ git commit ready
+
+# 設定されたエディタが起動され、コミットメッセージを書かずにエディタを終了
+
+Aborting commit due to empty commit message.

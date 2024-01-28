@@ -1,0 +1,53 @@
+## ======================================================================
+$ git send-email --to devlist@example.org 0001-Add-A.patch
+0001-Add-A.patch
+(mbox) Adding cc: Prem Kumar Ponuthorai <ppremk@gmail.com> from line 'From: Prem Kumar Ponuthorai <ppremk@gmail.com>'
+
+From: Prem Kumar Ponuthorai <ppremk@gmail.com>
+To: devlist@example.org
+Cc: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Subject: [PATCH] Add A
+Date: Wed,  5 Jan 2022 15:13:38 +0100
+Message-Id: <20220105141338.79674-1-ppremk@gmail.com>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+    The Cc list above has been expanded by additional
+    addresses found in the patch commit message. By default
+    send-email prompts before sending whenever this occurs.
+    This behavior is controlled by the sendemail.confirm
+    configuration setting.
+
+    For additional information, run 'git send-email --help'.
+    To retain the current behavior, but squelch this message,
+    run 'git config --global sendemail.confirm auto'.
+
+Send this email? ([y]es|[n]o|[e]dit|[q]uit|[a]ll): y
+
+OK. Log says:
+Sendmail: /usr/sbin/sendmail -i devlist@example.org ppremk@gmail.com
+From: Prem Kumar Ponuthorai <ppremk@gmail.com>
+To: devlist@example.org
+Cc: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Subject: [PATCH] add file A
+Date: Wed,  5 Jan 2022 15:13:38 +0100
+Message-Id: <20220105141338.79674-1-ppremk@gmail.com>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+Result: OK
+
+$ git config --global sendemail.smtpserver smtp.my-isp.com
+$ git config --global sendemail.smtpserverport 465
+
+$ git format-patch --stdout main~2..main > mbox
+
+$ mutt -f mbox
+
+q:Quit  d:Del  u:Undel  s:Save  m:Mail  r:Reply  g:Group  ?:Help
+   1 N   Dec 29 Jon Loeliger    (  15) [PATCH] X
+   2 N   Dec 29 Jon Loeliger    (  16) [PATCH] Y
+   3 N   Dec 29 Jon Loeliger    (  16) [PATCH] Z
+   4 N   Dec 29 Jon Loeliger    (  15) [PATCH] F

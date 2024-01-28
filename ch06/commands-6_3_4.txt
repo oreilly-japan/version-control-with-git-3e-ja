@@ -1,0 +1,37 @@
+## ======================================================================
+$ cat hello
+hello
+everyone
+Yay!
+
+$ git add hello
+$ git ls-files -s
+100644 ebc56522386c504db37db907882c9dbd0d05a0f0 0       hello
+
+$ cat .git/MERGE_MSG
+Merge branch 'alt'
+
+# Conflicts:
+#       hello
+
+$ git commit
+[main d67ecec] Merge branch 'alt'
+
+$ git show
+commit d67ecec075281cebb32a9eedd76242b6e9ac76a8 (HEAD -> main)
+Merge: 0d7dfb7 84e436c
+Author: Prem Kumar Ponuthorai <ppremk@demo.com>
+Date:   Sun Sep 5 21:49:53 2021 +0200
+
+    Merge branch 'alt'
+
+diff --cc hello
+index e63164d,562080a..ebc5652
+--- a/hello
++++ b/hello
+@@@ -1,3 -1,3 +1,3 @@@
+  hello
+- worlds
+ -world
+++everyone
+  Yay!

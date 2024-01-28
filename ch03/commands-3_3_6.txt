@@ -1,0 +1,56 @@
+## ======================================================================
+$ git checkout -m dev
+M       NewStuff
+Switched to branch "dev"
+
+# ブランチの切り替え中のマージで発生したマージコンフリクトのために
+# NewStuffにはコンフリクトマーカー（<<<、===、>>>）が追加される
+
+$ cat NewStuff
+Something
+<<<<<<< dev:NewStuff
+A text existing in the dev branch version
+=======
+Something else
+>>>>>>> local:NewStuff
+
+$ git show-branch
+! [bugs/pr-1] Fix Problem Report 1
+ ! [bugs/pr-2] Added Bob's fixes.
+  ! [dev] Started developing NewStuff
+   * [main] Added Bob's fixes.
+----
+  +  [dev] Started developing NewStuff
+  +  [dev^] Improve the new development
+  +  [dev~2] Start some new development.
++    [bugs/pr-1] Fix Problem Report 1
++++* [bugs/pr-2] Added Bob's fixes.
+
+$ echo "Some bug fix" >> NewStuff
+
+$ cat NewStuff
+Something
+Some bug fix
+
+$ git show bug/pr-1:NewStuff
+Something
+
+$ git checkout -m bug/pr-1
+M       NewStuff
+Switched to branch "bug/pr-1"
+
+$ cat NewStuff
+Something
+Some bug fix
+
+$ git diff
+diff --git a/NewStuff b/NewStuff
+index 0f2416e..b4d8596 100644
+--- a/NewStuff
++++ b/NewStuff
+@@ -1 +1,2 @@
+ Something
++Some bug fix
+
+## ======================================================================
+$ git merge-base original-branch new-branch

@@ -1,0 +1,27 @@
+## ======================================================================
+$ cd ~/my_website
+
+$ git show-branch -a
+* [main] add new file
+ ! [origin/main] add new file
+--
+*+ [main] add new file
+
+$ cat fuzzy.txt
+Fuzzy Wuzzy was a bear
+Fuzzy Wuzzy had no hair
+Fuzzy Wuzzy wasn't very fuzzy,
+Was he?
+
+$ git add fuzzy.txt
+$ git commit -m "Add a new poem"
+[main 2daf640] Add a new poem
+ 1 files changed, 4 insertions(+)
+ create mode 100644 fuzzy.txt
+
+$ git show-branch -a
+* [main] Add a new poem
+ ! [origin/main] add new file
+--
+*  [main] Add a new poem
+*+ [origin/main] add new file

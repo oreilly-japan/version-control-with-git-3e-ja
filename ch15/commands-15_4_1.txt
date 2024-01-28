@@ -1,0 +1,76 @@
+## ======================================================================
+# 実際に試す場合、https://github.com/ppremk/example-subtree-template
+# のテンプレートリポジトリをもとにあなたのGitHubアカウントに新しいリポジトリを
+# 作成していただきたい。左上の“Use this template”という緑のボタンをクリック
+# すると、リポジトリのコピーを作れる。
+
+# コピーした自分のexample-subtreeリポジトリにGitHub WebUIで直接
+# 「Update README.md」、「One more update to README.md」、
+# 「Final update to README.md」のコミットメッセージの
+# 3つのダミーコミットを作っておくこと
+
+$ ls
+sp-readme.md
+
+$ git log --oneline --graph
+* a5b6866 (HEAD -> main) Initial commit
+
+# GitHubのあなたのリポジトリのクローンURLから既存サブツリーを追加する。
+# subtree addコマンドを介してサブプロジェクトのどのブランチを参照したいかを
+# 指定する。
+# git subtreeエクステンションをインストールしておくこと
+# （まだインストールされていない場合）
+
+$ git subtree add --prefix=example-subtree https://github.com/ppremk/example-subtree.git main
+git fetch https://github.com/ppremk/example-subtree.git main
+remote: Enumerating objects: 15, done.
+remote: Counting objects: 100% (15/15), done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 15 (delta 5), reused 4 (delta 0), pack-reused 0
+Unpacking objects: 100% (15/15), 2.87 KiB | 367.00 KiB/s, done.
+From https://github.com/ppremk/example-subtree
+ * branch            main       -> FETCH_HEAD
+Added dir 'example-subtree'
+
+$ ls
+example-subtree sp-readme.md
+
+# サブプロジェクトのコミット履歴がスーパープロジェクトのコミット履歴に
+# 結合されていることを確認する。
+
+$ git log --oneline --graph
+*   78d0604 (HEAD -> main) Add 'example-subtree/' from commit '08d39b...'
+|\
+| * 08d39b1 Final update to README.md
+| * 87c0990 One more update to README.md
+| * 473e4f9 Update README.md
+| * e5d123a Initial commit
+* a5b6866 Initial commit
+
+# HEADを最初のコミットに変更する。
+# あなたの環境ではコミットIDが異なっているはずなので適宜読み替えて実行してほしい。
+$ git reset --hard a5b6866
+HEAD is now at a5b6866 Initial commit
+
+$ git log --oneline --graph
+* a5b6866 (HEAD -> main) Initial commit
+
+# サブプロジェクトのコミット履歴を圧縮する
+
+$ git subtree add --prefix=example-subtree https://github.com/ppremk/example-subtree.git main --squash
+git fetch https://github.com/ppremk/example-subtree.git main
+From https://github.com/ppremk/example-subtree
+ * branch            main       -> FETCH_HEAD
+Added dir 'example-subtree'
+
+$ ls
+example-subtree sp-README.md
+
+$ git log --oneline --graph
+*   525f638 (HEAD -> main) Merge commit '5d3ce7...' as 'example-subtree'
+|\
+| * 5d3ce7a Squashed 'example-subtree/' content from commit 08d39b1
+* a5b6866 Initial commit
+
+$ git remote add subremote-origin
+  https://github.com/ppremk/example-subtree.git

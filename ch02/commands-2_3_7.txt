@@ -1,0 +1,14 @@
+## ======================================================================
+$ git tag -a V1.0 3ede462
+
+$ git rev-parse V1.0
+6b608c1093943939ae78348117dd18b1ba151c6a
+
+$ git cat-file -p 6b608c
+object 3ede4622cc241bcb09683af36360e7413b9ddf6c
+type commit
+tag V1.0
+tagger Jon Loeliger <jdl@example.com> 1656932858 +0200
+
+Tag version 1.0
+

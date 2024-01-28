@@ -1,0 +1,49 @@
+## ======================================================================
+$ git config --global user.name "Jon Loeliger"
+$ git config --global user.email "jdl@example.com"
+
+## ======================================================================
+$ git config user.name "Jon Loeliger"
+$ git config user.email "jdl@special-project.example.org"
+
+## ======================================================================
+# 新しい空のリポジトリを作る
+$ mkdir /tmp/new
+$ cd /tmp/new
+$ git init
+
+# 設定をいくつか書き込む
+$ git config --global user.name "Jon Loeliger"
+$ git config --global user.email "jdl@example.com"
+$ git config user.email "jdl@special-project.example.org"
+
+$ git config -l
+user.name=Jon Loeliger
+user.email=jdl@example.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+user.email=jdl@special-project.example.org
+
+## ======================================================================
+$ git config -l --show-scope --show-origin
+
+## ======================================================================
+$ cat .git/config
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = false
+    logallrefupdates = true
+    ignorecase = true
+    precomposeunicode = true
+[user]
+    email = jdl@special-project.example.org
+
+## ======================================================================
+$ git config --unset --global user.email
+
+## ======================================================================
+$ git config --global alias.show-graph 'log --graph --abbrev-commit --pretty=oneline'
+

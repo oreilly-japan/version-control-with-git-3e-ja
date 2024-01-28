@@ -1,0 +1,4 @@
+## ======================================================================
+$ git update-ref someref commit-id
+
+$ git update-ref -d someref

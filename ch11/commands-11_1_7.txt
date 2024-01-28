@@ -1,0 +1,13 @@
+## ======================================================================
+$ cd git-repo
+$ cat .git/config
+...
+...
+[remote "origin"]
+        url = https://github.com/ppremk/git.git
+        fetch = +refs/heads/*:refs/remotes/origin/*   # ← refspec
+...
+...
+
+$ git push origin branch
+$ git push origin branch:refs/heads/branch

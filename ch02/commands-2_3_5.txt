@@ -1,0 +1,23 @@
+## ======================================================================
+$ pwd
+/tmp/hello
+$ mkdir subdir
+$ cp hello.txt subdir/
+$ git add subdir/hello.txt
+$ git write-tree
+492413269336d21fac079d4a4672e55d5d2147ac
+
+$ git cat-file -p 4924132693
+100644 blob 3b18e512dba79e4c8300dd08aeb37f8e728b8dad    hello.txt
+040000 tree 68aba62e560c0ebc3396e8ae9335232cd93a3f60    subdir
+
+$ find .git/objects
+.git/objects
+.git/objects/49
+.git/objects/49/2413269336d21fac079d4a4672e55d5d2147ac
+.git/objects/68
+.git/objects/68/aba62e560c0ebc3396e8ae9335232cd93a3f60
+.git/objects/pack
+.git/objects/3b
+.git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad
+.git/objects/info

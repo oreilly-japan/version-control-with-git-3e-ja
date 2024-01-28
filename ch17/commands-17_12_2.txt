@@ -1,0 +1,20 @@
+## ======================================================================
+# Debian系のLinuxディストリビューション
+$ sudo apt install git-lfs
+
+# macOS
+$ brew install git-lfs
+
+$ cat ~/.gitconfig
+[filter "lfs"]
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
+        required = true
+        clean = git-lfs clean -- %f
+
+$ git lfs pointer --file=path/to/file
+Git LFS pointer for file
+
+version https://git-lfs.github.com/spec/v1
+oid sha256:91104678a2b7598a4df9fd42e16baac8e8f695208e5990d47449b9c458ce7a47
+size 35000000

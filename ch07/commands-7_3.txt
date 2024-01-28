@@ -1,0 +1,26 @@
+## ======================================================================
+# 5行の新ファイルfile3を追加する
+$ echo -e "Line1 \nLine2 \nLine3 \nLine4 \nLine5" > file3
+$ cat file3
+Line1
+Line2
+Line3
+Line4
+Line5
+
+# インデックスにfile3を追加する
+$ git add file3
+
+# ここで、
+# file3からLine3を削除し、Line6とLine7を追加する
+# ...
+
+$ cat file3
+Line1
+Line2
+Line4
+Line5
+Line6
+Line7
+
+$ git diff file3

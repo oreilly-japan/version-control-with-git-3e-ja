@@ -1,0 +1,31 @@
+## ======================================================================
+# ローカルリポジトリへのパス
+$ pwd
+/tmp/active-projects/my-super-project
+
+# 既存のリモートオリジンパスを表示する
+$ git remote -v
+origin  /tmp/bare-repositories/my-super-project (fetch)
+origin  /tmp/bare-repositories/my-super-project (push)
+
+$ git remote remove origin
+
+# リモートoriginが返されなくなる
+$ git remote -v
+
+# 新しいリモートoriginのURLを追加する
+$ git remote add origin https://github.com/ppremk/my-super-project.git
+
+# 新しい上流にローカルリポジトリをプッシュする。
+# デフォルトブランチはすでにmainという名前になっているので、
+# 「git branch -M main」は省略できる。
+$ git push -u origin main
+Enumerating objects: 8, done.
+Counting objects: 100% (8/8), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (8/8), 917 bytes | 917.00 KiB/s, done.
+Total 8 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/ppremk/my-super-project.git
+ * [new branch]      main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.

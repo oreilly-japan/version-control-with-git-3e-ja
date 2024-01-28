@@ -1,0 +1,141 @@
+## ======================================================================
+# LinuxカーネルのGitリポジトリをクローンする
+$ git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+
+$ cd linux
+
+# masterブランチの先頭を2008年10月27日に行われたコミットに変更する。
+# git reset --hard ORIG_HEADを実行すると元の状態に戻せる。
+$ git reset --hard 49fdf6785fd660e18a1eb4588928f47e9fa29a9a
+...
+HEAD is now at 49fdf6785fd6 Merge branch 'for-linus' of git://git.kernel.dk/linux-2.6-block
+
+$ git bisect start
+status: waiting for both good and bad commits
+
+$ git bisect bad
+status: waiting for good commit(s), bad commit known
+
+$ git bisect good v2.6.27
+Bisecting: 3818 revisions left to test after this (roughly 12 steps)
+[cf2fa66055d718ae13e62451bb546505f63906a2] Merge branch 'for_linus' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-2.6
+
+$ git bisect good
+Bisecting: 1878 revisions left to test after this (roughly 11 steps)
+[2be508d847392e431759e370d21cea9412848758] Merge git://git.infradead.org/mtd-2.6
+
+$ git bisect good
+Bisecting: 939 revisions left to test after this (roughly 10 steps)
+[b80de369aa5c7c8ce7ff7a691e86e1dcc89accc6] 8250: Add more OxSemi devices
+
+$ git bisect bad
+Bisecting: 429 revisions left to test after this (roughly 9 steps)
+[9301975ec251bab1ad7cfcb84a688b26187e4e4a] Merge branch 'genirq-v28-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip
+
+$ git bisect good
+Bisecting: 220 revisions left to test after this (roughly 8 steps)
+[7cf5244ce4a0ab3f043f2e9593e07516b0df5715] mfd: check for platform_get_irq() return value in sm501
+
+$ git bisect bad
+Bisecting: 104 revisions left to test after this (roughly 7 steps)
+[e4c2ce82ca2710e17cb4df8eb2b249fa2eb5af30] ring_buffer: allocate buffer page pointer
+
+$ git bisect log
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [49fdf6785fd660e18a1eb4588928f47e9fa29a9a] Merge branch 'for-linus' of git://git.kernel.dk/linux-2.6-block
+git bisect bad 49fdf6785fd660e18a1eb4588928f47e9fa29a9a
+# status: waiting for good commit(s), bad commit known
+# good: [3fa8749e584b55f1180411ab1b51117190bac1e5] Linux 2.6.27
+git bisect good 3fa8749e584b55f1180411ab1b51117190bac1e5
+# good: [cf2fa66055d718ae13e62451bb546505f63906a2] Merge branch 'for_linus' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-2.6
+git bisect good cf2fa66055d718ae13e62451bb546505f63906a2
+# good: [2be508d847392e431759e370d21cea9412848758] Merge git://git.infradead.org/mtd-2.6
+git bisect good 2be508d847392e431759e370d21cea9412848758
+# bad: [b80de369aa5c7c8ce7ff7a691e86e1dcc89accc6] 8250: Add more OxSemi devices
+git bisect bad b80de369aa5c7c8ce7ff7a691e86e1dcc89accc6
+# good: [9301975ec251bab1ad7cfcb84a688b26187e4e4a] Merge branch 'genirq-v28-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip
+git bisect good 9301975ec251bab1ad7cfcb84a688b26187e4e4a
+# bad: [7cf5244ce4a0ab3f043f2e9593e07516b0df5715] mfd: check for platform_get_irq() return value in sm501
+git bisect bad 7cf5244ce4a0ab3f043f2e9593e07516b0df5715
+
+$ git bisect bad
+Bisecting: 51 revisions left to test after this (roughly 6 steps)
+[d3ee6d992821f471193a7ee7a00af9ebb4bf5d01] ftrace: make it depend on DEBUG_KERNEL
+
+$ git bisect bad
+Bisecting: 25 revisions left to test after this (roughly 5 steps)
+[3f5a54e371ca20b119b73704f6c01b71295c1714] ftrace: dump out ftrace buffers to console on panic
+
+$ git bisect bad
+Bisecting: 12 revisions left to test after this (roughly 4 steps)
+[8da3821ba5634497da63d58a69e24a97697c4a2b] ftrace: create _mcount_loc section
+
+$ git bisect bad
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[fa340d9c050e78fb21a142b617304214ae5e0c2d] tracing: disable tracepoints by default
+
+$ git bisect bad
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[4a0897526bbc5c6ac0df80b16b8c60339e717ae2] tracing: tracepoints, samples
+
+$ git bisect visualize --pretty=oneline
+fa340d9c050e78fb21a142b617304214ae5e0c2d tracing: disable tracepoints by default
+b07c3f193a8074aa4afe43cfa8ae38ec4c7ccfa9 ftrace: port to tracepoints
+0a16b6075843325dc402edf80c1662838b929aff tracing, sched: LTTng instrumentation - scheduler
+4a0897526bbc5c6ac0df80b16b8c60339e717ae2 (HEAD) tracing: tracepoints, samples
+24b8d831d56aac7907752d22d2aba5d8127db6f6 tracing: tracepoints, documentation
+97e1c18e8d17bd87e1e383b2e9d9fc740332c8e2 tracing: Kernel Tracepoints
+
+$ git bisect good
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[b07c3f193a8074aa4afe43cfa8ae38ec4c7ccfa9] ftrace: port to tracepoints
+
+$ git bisect good
+fa340d9c050e78fb21a142b617304214ae5e0c2d is the first bad commit
+commit fa340d9c050e78fb21a142b617304214ae5e0c2d
+Author: Ingo Molnar <mingo@elte.hu>
+Date:   Wed Jul 23 13:38:00 2008 +0200
+
+    tracing: disable tracepoints by default
+
+    while it's arguably low overhead, we dont enable new features by default.
+
+    Signed-off-by: Ingo Molnar <mingo@elte.hu>
+
+ init/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+# git bisect start <異常コミットのコミットID> <正常コミットのコミットID>
+$ git bisect start HEAD v2.6.27
+
+$ git bisect run command
+...
+...
+...
+fa340d9c050e78fb21a142b617304214ae5e0c2d is the first bad commit
+commit fa340d9c050e78fb21a142b617304214ae5e0c2d
+Author: Ingo Molnar <mingo@elte.hu>
+Date:   Wed Jul 23 13:38:00 2008 +0200
+
+    tracing: disable tracepoints by default
+
+    while it's arguably low overhead, we dont enable new features by default.
+
+    Signed-off-by: Ingo Molnar <mingo@elte.hu>
+
+ init/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+$ git branch
+* (no branch, bisect started on main)
+  master
+
+$ git bisect reset
+...
+Previous HEAD position was <COMMIT-SHA1> ...
+Switched to branch "main"
+...
+
+$ git branch
+* master

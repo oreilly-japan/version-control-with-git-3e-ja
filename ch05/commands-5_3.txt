@@ -1,0 +1,47 @@
+## ======================================================================
+$ git status
+ On branch main
+
+ No commits yet
+
+ Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+       .gitignore
+       data
+
+# 2個の新ファイルを追跡する
+$ git add data .gitignore
+
+$ git status
+ On branch main
+
+ No commits yet
+
+ Changes to be committed:
+   (use "git rm --cached <file>..." to unstage)
+
+       new file: .gitignore
+       new file: data
+
+$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0       .gitignore
+100644 534469f67ae5ce72a7a274faf30dee3c2ea1746d 0       data
+
+$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0       .gitignore
+100644 534469f67ae5ce72a7a274faf30dee3c2ea1746d 0       data
+
+# dataファイルの内容を次のように書き換える
+$ cat data
+New data
+And some more data now
+
+$ git hash-object data
+e476983f39f6e4f453f0fe4a859410f63b58b500
+
+$ git add data
+$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0       .gitignore
+100644 e476983f39f6e4f453f0fe4a859410f63b58b500 0       data
+

@@ -1,0 +1,9 @@
+## ======================================================================
+# デフォルトは90日
+$ git config --global gc.reflogExpire "6 months"
+
+# デフォルトは30日
+$ git config --global gc.reflogExpireUnreachable "60 days"
+
+# デフォルトは2週間
+$ git config --global gc.pruneExpire="1 month"

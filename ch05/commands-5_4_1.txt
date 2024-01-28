@@ -1,0 +1,47 @@
+## ======================================================================
+# テストリポジトリのセットアップ
+$ mkdir /tmp/commit-all-example
+$ cd /tmp/commit-all-example
+$ git init --initial-branch=main
+Initialized empty Git repository in /tmp/commit-all-example/.git/
+
+$ echo something > ready
+$ echo something else > notyet
+$ git add ready notyet
+$ git commit -m "Setup"
+[main (root-commit) 63ae368]] Setup
+ 2 files changed, 2 insertions(+)
+ create mode 100644 notyet
+ create mode 100644 ready
+
+# readyファイルを書き換え、「git add」してインデックスにステージング
+$ git add ready
+
+# notyetファイルを書き換え、ステージングしない
+
+# サブディレクトリにファイルを追加し、ステージングしない
+$ mkdir subdir
+$ echo Nope > subdir/new
+
+$ git status
+On branch main
+Changes to be committed:
+(use "git restore --staged <file>..." to unstage)
+    modified:   ready
+
+Changes not staged for commit:
+(use "git add <file>..." to update what will be committed)
+(use "git restore <file>..." to discard changes in working directory)
+    modified:   notyet
+
+Untracked files:
+(use "git add <file>..." to include in what will be committed)
+    subdir/
+
+$ git commit --all
+
+## ======================================================================
+$ git commit -a -m trackedfile
+
+$ git rm somefile
+$ git commit

@@ -1,0 +1,16 @@
+## ======================================================================
+$ cd git-2.37.0
+$ ./configure --prefix=/usr/local
+$ make all
+$ sudo make install
+
+$ which git
+/usr/local/bin/git
+
+$ git --version
+git version 2.37.0
+
+$ cd git-2.37.0
+$ ./configure --prefix=/usr/local
+$ make all doc
+$ sudo make install install-doc

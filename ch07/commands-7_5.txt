@@ -1,0 +1,91 @@
+## ======================================================================
+# Gitのリポジトリをクローンしてmainブランチをチェックアウト
+$ git clone -b main https://git.kernel.org/pub/scm/git/git.git
+
+# mainブランチの先頭をd2b3691b61d516a0ad2bf700a2a5d9113ceff0b1のコミットに変更する。
+# git reset --hard ORIG_HEADを実行すると元の状態に戻せる。
+$ git reset --hard d2b3691b61d516a0ad2bf700a2a5d9113ceff0b1
+HEAD is now at d2b3691b61 "git checkout -- paths..." should error out when paths cannot be written
+
+$ git diff --stat main~5 main
+ Documentation/git-add.txt            |    2 +-
+ Documentation/git-cherry.txt         |    6 +++++
+ Documentation/git-commit-tree.txt    |    2 +-
+ Documentation/git-format-patch.txt   |    2 +-
+ Documentation/git-gc.txt             |    2 +-
+ Documentation/git-gui.txt            |    4 +-
+ Documentation/git-ls-files.txt       |    2 +-
+ Documentation/git-pack-objects.txt   |    2 +-
+ Documentation/git-pack-redundant.txt |    2 +-
+ Documentation/git-prune-packed.txt   |    2 +-
+ Documentation/git-prune.txt          |    2 +-
+ Documentation/git-read-tree.txt      |    2 +-
+ Documentation/git-remote.txt         |    2 +-
+ Documentation/git-repack.txt         |    2 +-
+ Documentation/git-rm.txt             |    2 +-
+ Documentation/git-status.txt         |    2 +-
+ Documentation/git-update-index.txt   |    2 +-
+ Documentation/git-var.txt            |    2 +-
+ Documentation/gitk.txt               |    2 +-
+ builtin-checkout.c                   |    7 ++++-
+ builtin-fetch.c                      |    6 ++--
+ git-bisect.sh                        |   29 ++++++++++++--------------
+ t/t5518-fetch-exit-status.sh         |   37 ++++++++++++++++++++++++++++++++++
+ 23 files changed, 83 insertions(+), 40 deletions(-)
+
+$ git diff --stat main~5 main Documentation
+ Documentation/git-add.txt            |    2 +-
+ Documentation/git-cherry.txt         |    6 ++++++
+ Documentation/git-commit-tree.txt    |    2 +-
+ Documentation/git-format-patch.txt   |    2 +-
+ Documentation/git-gc.txt             |    2 +-
+ Documentation/git-gui.txt            |    4 ++--
+ Documentation/git-ls-files.txt       |    2 +-
+ Documentation/git-pack-objects.txt   |    2 +-
+ Documentation/git-pack-redundant.txt |    2 +-
+ Documentation/git-prune-packed.txt   |    2 +-
+ Documentation/git-prune.txt          |    2 +-
+ Documentation/git-read-tree.txt      |    2 +-
+ Documentation/git-remote.txt         |    2 +-
+ Documentation/git-repack.txt         |    2 +-
+ Documentation/git-rm.txt             |    2 +-
+ Documentation/git-status.txt         |    2 +-
+ Documentation/git-update-index.txt   |    2 +-
+ Documentation/git-var.txt            |    2 +-
+ Documentation/gitk.txt               |    2 +-
+ 19 files changed, 25 insertions(+), 19 deletions(-)
+
+$ git diff main~5 main Documentation/git-add.txt
+diff --git a/Documentation/git-add.txt b/Documentation/git-add.txt
+index bb4abe2..1afd0c6 100644
+--- a/Documentation/git-add.txt
++++ b/Documentation/git-add.txt
+@@ -246,7 +246,7 @@ characters that need C-quoting.  `core.quotepath` configuration can be
+ used to work this limitation around to some degree, but backslash,
+ double-quote and control characters will still have problems.
+
+-See Also
++SEE ALSO
+ --------
+ linkgit:git-status[1]
+ linkgit:git-rm[1]
+
+$ git diff -S"octopus" main~50
+diff --git a/Documentation/RelNotes-1.5.5.3.txt b/Documentation/RelNotes-1.5.5.3.txt
+new file mode 100644
+index 0000000..f22f98b
+--- /dev/null
++++ b/Documentation/RelNotes-1.5.5.3.txt
+@@ -0,0 +1,12 @@
++GIT v1.5.5.3 Release Notes
++==========================
++
++Fixes since v1.5.5.2
++--------------------
++
++ * "git send-email --compose" did not notice that non-ascii contents
++   needed some MIME magic.
++
++ * "git fast-export" did not export octopus merges correctly.
++
++Also comes with various documentation updates.

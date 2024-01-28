@@ -1,0 +1,206 @@
+## ======================================================================
+$ mkdir /tmp/patch-demo ; cd /tmp/patch-demo
+$ git init -b main
+$ echo A > file
+$ git add file
+$ git commit -m "Add A"
+ [main (root-commit) 11200ff] Add A
+  1 file changed, 1 insertion(+)
+  create mode 100644 file
+$ echo B >> file ; git commit -m "Add B" file
+ [main ace6f32] Add B
+  1 file changed, 1 insertion(+)
+$ echo C >> file ; git commit -m "Add C" file
+ [main b621372] Add C
+  1 file changed, 1 insertion(+)
+$ echo D >> file ; git commit -m "Add D" file
+ [main d578a1c] Add D
+  1 file changed, 1 insertion(+)
+
+$ git show-branch --more=4 main
+[main] Add D
+[main^] Add C
+[main~2] Add B
+[main~3] Add A
+
+$ git format-patch -1
+0001-Add-D.patch
+
+$ git format-patch -2
+0001-Add-C.patch
+0002-Add-D.patch
+
+$ git format-patch -3
+0001-Add-B.patch
+0002-Add-C.patch
+0003-Add-D.patch
+
+$ git format-patch main~2..main
+0001-Add-C.patch
+0002-Add-D.patch
+
+$ cat 0001-Add-C.patch
+From b621372d83c034eb8b962574d5ad01449b93f6b7 Mon Sep 17 00:00:00 2001
+From: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Date: Wed, 5 Jan 2022 12:48:32 +0100
+Subject: [PATCH 1/2] Add C
+
+---
+file | 1 +
+1 file changed, 1 insertion(+)
+
+diff --git a/file b/file
+index 35d242b..b1e6722 100644
+--- a/file
++++ b/file
+@@ -1,2 +1,3 @@
+A
+B
++C
+--
+2.37.0
+
+$ cat 0002-Add-D.patch
+From d578a1c3031e995f5234d1a25f36e470842484eb Mon Sep 17 00:00:00 2001
+From: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Date: Wed, 5 Jan 2022 12:48:46 +0100
+Subject: [PATCH] Add D
+
+---
+file | 1 +
+1 file changed, 1 insertion(+)
+
+diff --git a/file b/file
+index b1e6722..8422d40 100644
+--- a/file
++++ b/file
+@@ -1,3 +1,4 @@
+A
+B
+C
++D
+--
+2.37.0
+
+# コミットBをベースとしてaltというブランチを作る
+# （コミットBのコミットIDは、git log --onelineコマンドで調べること。
+#   あなたのコミットIDは、ここで使っているものとは異なる可能性がある）
+$ git checkout -b alt ace6f32
+Switched to a new branch 'alt'
+$ echo X >> file ; git commit -m "Add X" file
+[alt 43250ac] Add X
+  1 file changed, 1 insertion(+)
+$ echo Y >> file ; git commit -m "Add Y" file
+[alt fd1ca23] Add Y
+  1 file changed, 1 insertion(+)
+$ echo Z >> file ; git commit -m "Add Z" file
+[alt cc9993c] Add Z
+  1 file changed, 1 insertion(+)
+
+$ git log --graph --pretty=oneline --abbrev-commit --all
+* cc9993c (HEAD -> alt) Add Z
+* fd1ca23 Add Y
+* 43250ac Add X
+| * d578a1c (main) Add D
+| * b621372 Add C
+|/
+* ace6f32 Add B
+* 11200ff Add A
+
+$ git checkout main
+$ git merge alt
+
+# コンフリクトは好きなように解決してよい
+# 以下の説明は、A, B, C, D, X, Y, Zとしたことを前提としている
+
+$ git add file
+$ git commit -m "Add all lines"
+[main 5727615] Add all lines
+
+$ echo F >> file ; git commit -m “Add F” file
+[main 9ab717f] Add F
+ 1 file changed, 1 insertion(+)
+
+$ git show-branch --more=10
+! [alt] Add Z
+ * [main] Add F
+--
+ * [main] Add F
++* [alt] Add Z
++* [alt^] Add Y
++* [alt~2] Add X
+ * [main~2] Add D
+ * [main~3] Add C
++* [main~4] Add B
++* [main~5] Add A
+
+# D..Fのパッチを出力する
+$ git format-patch main~2..main
+0001-Add-X.patch
+0002-Add-Y.patch
+0003-Add-Z.patch
+0004-Add-F.patch
+
+$ git branch
+  alt
+* main
+
+# コミットAを表すためにmain~5を使っている
+$ git format-patch main~5
+0001-Add-B.patch
+0002-Add-C.patch
+0003-Add-D.patch
+0004-Add-X.patch
+0005-Add-Y.patch
+0006-Add-Z.patch
+0007-Add-F.patch
+
+$ git checkout alt
+Switched to branch "alt"
+
+$ git branch
+* alt
+  main
+
+$ git format-patch main~5
+0001-Add-B.patch
+0002-Add-X.patch
+0003-Add-Y.patch
+0004-Add-Z.patch
+
+$ git format-patch --root end-commit-SHA-1
+
+$ git format-patch --root main~5
+$ cat 0001-Add-A.patch
+From 11200ff80b78bd777d8832b112eaddcdd8b899db Mon Sep 17 00:00:00 2001
+From: Prem Kumar Ponuthorai
+<ppremk@gmail.com>
+Date: Wed, 5 Jan 2022 12:47:17 +0100
+Subject: [PATCH] add file A
+
+---
+ file | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file
+
+diff --git a/file b/file
+new file mode 100644
+index 0000000..f70f10e
+--- /dev/null
++++ b/file
+@@ -0,0 +1 @@
++A
+--
+2.37.0
+
+$ git checkout main
+Switched to branch "main"
+
+$ git branch
+  alt
+* main
+
+$ git format-patch alt
+0001-Add-C.patch
+0002-Add-D.patch
+0003-Add-F.patch

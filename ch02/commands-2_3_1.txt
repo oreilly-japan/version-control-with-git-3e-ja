@@ -1,0 +1,55 @@
+## ======================================================================
+$ git help -a
+
+## ======================================================================
+$ mkdir /tmp/hello
+$ cd /tmp/hello
+$ git init -b main
+Initialized empty Git repository in /tmp/hello/.git/
+
+# カレントディレクトリ以下のすべてのファイルを表示
+$ tree .git
+ .git
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── info
+│　 └── exclude
+├── objects
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 └── tags
+
+8 directories, 17 files
+
+## ======================================================================
+$ find .git/objects
+.git/objects
+.git/objects/pack
+.git/objects/info
+
+$ echo "hello world" > hello.txt
+$ git add hello.txt
+
+$ find .git/objects
+.git/objects
+.git/objects/3b
+.git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad
+.git/objects/pack
+.git/objects/info

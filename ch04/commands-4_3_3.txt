@@ -1,0 +1,42 @@
+## ======================================================================
+# Gitのリポジトリのミラーをクローンして、masterブランチの名前をmainに変更
+$ git clone https://github.com/git/git.git
+$ cd git
+$ git branch -M master main
+
+# mainブランチの先頭をバージョン2.31リリース時点のコミットに変更する。
+# このコミット以降のコミット履歴は出力されなくなる。
+# git reset --hard ORIG_HEADを実行すると元の状態に戻せる。
+$ git reset --hard a5828ae6b52137b913b978e16cd2334482eb4c1f
+HEAD is now at a5828ae6b5 Git 2.31
+
+$ git show-branch --more=25
+[main] Git 2.31
+[main^] Merge branch 'jn/mergetool-hideresolved-is-optional'
+[main^^2] doc: describe mergetool configuration in git-mergetool(1)
+[main^^2^] mergetool: do not enable hideResolved by default
+[main^^2~2] mergetool: add per-tool support and overrides for the hideResolved flag
+[main~2] Merge branch 'tb/pack-revindex-on-disk'
+[main~2^2] pack-revindex.c: don't close unopened file descriptors
+[main~3] Merge tag 'l10n-2.31.0-rnd2' of git://github.com/git-l10n/git-po
+[main~3^2] l10n: zh_CN: for git v2.31.0 l10n round 1 and 2
+[main~3^2^] Merge branch 'master' of github.com:vnwildman/git
+[main~3^2^^2] l10n: vi.po(5104t): for git v2.31.0 l10n round 2
+[main~3^2~2] Merge branch 'l10n/zh_TW/210301' of github.com:l10n-tw/git-po
+[main~3^2~2^2] l10n: zh_TW.po: v2.31.0 round 2 (15 untranslated)
+[main~3^2~3] Merge branch 'po-id' of github.com:bagasme/git-po
+[main~3^2~3^2] l10n: Add translation team info
+[main~3^2~4] Merge branch 'master' of github.com:Softcatala/git-po
+[main~3^2~4^2] l10n: Update Catalan translation
+[main~3^2~5] Merge branch 'russian-l10n' of github.com:DJm00n/git-po-ru
+[main~3^2~5^2] l10n: ru.po: update Russian translation
+[main~3^2~6] Merge branch 'pt-PT' of github.com:git-l10n-pt-PT/git-po
+[main~3^2~6^2] l10n: pt_PT: add Portuguese translations part 1
+[main~3^2~7] l10n: de.po: Update German translation for Git v2.31.0
+[main~4] Git 2.31-rc2
+[main~5] Sync with Git 2.30.2 for CVE-2021-21300
+[main~5^2] Git 2.30.2
+[main~6] Merge branch 'jt/transfer-fsck-across-packs-fix'
+
+$ git rev-parse master~3^2~2^2
+8278f870221711c2116d3da2a0165ab00368f756

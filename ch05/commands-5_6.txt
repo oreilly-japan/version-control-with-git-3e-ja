@@ -1,0 +1,51 @@
+## ======================================================================
+$ mv stuff newstuff
+$ git rm stuff
+$ git add newstuff
+
+$ git mv stuff newstuff
+
+## ======================================================================
+# ファイル名を変更する前にインデックスをチェックする
+$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0   .gitignore
+100644 e476983f39f6e4f453f0fe4a859410f63b58b500 0   data
+
+$ git mv data mydata
+
+$ git status
+On branch main
+Changes to be committed:
+(use "git restore --staged <file>..." to unstage)
+    renamed:    data -> mydata
+
+# インデックスのファイル名が変更されていることをチェックする
+# ファイル名が変わってもオブジェクトIDは変わらないことに注意
+$ git ls-files --stage
+100644 0487f44090ad950f61955271cf0a2d6c6a83ad9a 0   .gitignore
+100644 e476983f39f6e4f453f0fe4a859410f63b58b500 0   mydata
+
+$ git commit -m "Moved data to mydata"
+[main 4b7a819] Moved data to mydata
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename data => mydata (100%)
+
+$ git log mydata
+commit 4b7a81923c636716d2b035574ca569018c723f21 (HEAD -> main)
+Author: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Date:   Mon Apr 5 23:56:05 2021 +0200
+
+Moved data to mydata
+
+$ git log --follow mydata
+commit 4b7a81923c636716d2b035574ca569018c723f21 (HEAD -> main)
+Author: Prem Kumar Ponuthorai  <ppremk@gmail.com>
+Date:   Mon Apr 5 23:56:05 2021 +0200
+
+    Moved data to mydata
+
+commit 57cbafaf8f20187395f6806aa7bc579fcbf7acde
+Author: Prem Kumar Ponuthorai  <ppremk@gmail.com>
+Date:   Mon Apr 5 23:37:48 2021 +0200
+
+    Add some files

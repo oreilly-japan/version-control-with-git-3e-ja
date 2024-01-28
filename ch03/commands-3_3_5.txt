@@ -1,0 +1,81 @@
+## ======================================================================
+$ git checkout branch
+
+## ======================================================================
+$ git branch
+  bugs/pr-1
+  bugs/pr-2
+* dev
+  main
+
+$ git checkout bugs/pr-1
+Switched to branch "bugs/pr-1"
+
+$ git branch
+* bugs/pr-1
+  bugs/pr-2
+  dev
+  main
+
+## ======================================================================
+$ git branch
+  bugs/pr-1
+  bugs/pr-2
+  dev
+* main
+
+$ git checkout dev
+error: Your local changes to the following files would be overwritten by checkout:
+    NewStuff
+Please, commit your changes or stash them before you can switch branches.
+Aborting
+
+# 作業ディレクトリのNewStuffの内容を表示する
+$ cat NewStuff
+Something
+Something else
+
+# ローカルバージョンのファイルには作業ディレクトリのカレントブランチ（main）に
+# ない行が追加されており、その変更がコミットされていないことを示す
+$ git diff NewStuff
+diff --git a/NewStuff b/NewStuff
+index 0f2416e..5e79566 100644
+--- a/NewStuff
++++ b/NewStuff
+@@ -1 +1,2 @@
+ Something
++Something else
+
+# devブランチのファイルの内容を表示する
+$ git show dev:NewStuff
+Something
+A text existing in the dev branch version
+
+# インデックスにファイルの追加をステージングする
+$ git add NewStuff
+
+$ git checkout dev
+error: Your local changes to the following files would be overwritten by checkout:
+    NewStuff
+Please, commit your changes or stash them before you can switch branches.
+Aborting
+
+## ======================================================================
+# devブランチへの切り替え
+$ git checkout dev
+
+# 特定のファイルの状態を先頭（HEAD）コミットよりも4世代前のものに戻す
+$ git checkout dev~4 index.js
+
+## ======================================================================
+# 作業ディレクトリとインデックスから削除されたファイルの復元
+$ rm -rf server.js
+$ git checkout server.js
+
+## ======================================================================
+$ git checkout -- file-with-same-branch-name.js
+
+## ======================================================================
+$ git switch branch
+
+$ git restore [options] file

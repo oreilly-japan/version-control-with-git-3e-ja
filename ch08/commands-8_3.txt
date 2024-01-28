@@ -1,0 +1,6 @@
+## ======================================================================
+$ git log -S"include" --pretty=oneline --abbrev-commit init/version.c
+cd354f1ae75e [PATCH] remove many unneeded #includes of sched.h
+4865ecf1315b [PATCH] namespaces: utsname: implement utsname namespaces
+63104eec234b kbuild: introduce utsrelease.h
+1da177e4c3f4 (tag: v2.6.12-rc2) Linux-2.6.12-rc2

@@ -1,0 +1,40 @@
+## ======================================================================
+$ git diff main bug/pr-1
+$ git diff main..bug/pr-1
+
+$ git show-branch main bug/pr-1
+* [main] Added a bug fix for pr-3.
+ ! [bug/pr-1] Fix Problem Report 1
+--
+*  [main] Added a bug fix for pr-3.
+ + [bug/pr-1] Fix Problem Report 1
+*+ [main^] Added Bob's fixes.
+
+$ git log -p main..bug/pr-1
+commit 8f4cf5757a3a83b0b3dbecd26244593c5fc820ea
+Author: Jon Loeliger <jdl@example.com>
+Date:   Wed May 14 17:53:54 2008 -0500
+
+Fix Problem Report 1
+
+diff --git a/ready b/ready
+index f3b6f0e..abbf9c5 100644
+--- a/ready
++++ b/ready
+@@ -1,3 +1,4 @@
+ stup
+ znill
+ frot-less
++Fix Problem Report 1
+
+$ git diff main..bug/pr-1
+diff --git a/ready b/ready
+index f3b6f0e..abbf9c5 100644
+--- a/ready
++++ b/ready
+@@ -1,4 +1,4 @@
+ stup
+ znill
+ frot-less
+-Fix Problem Report 3
++Fix Problem Report 1

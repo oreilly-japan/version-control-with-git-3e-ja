@@ -1,0 +1,138 @@
+## ======================================================================
+$ cd path/to/some/repo
+$ ls -R .git/objects/
+.git/objects/:
+25  3b  73  82  info  pack
+
+.git/objects/25:
+7cc5642cb1a054f08cc83f2d943e56fd3ebe99
+
+.git/objects/3b:
+d1f0e29744a1f32b08d5650e62e2e62afb177c
+
+.git/objects/73:
+8d05ac5663972e2dcf4b473e04b3d1f19ba674
+
+.git/objects/82:
+b5fee28277349b6d46beff5fdf6a7152347ba0
+
+.git/objects/info:
+
+.git/objects/pack:
+
+$ git fsck
+Checking object directories: 100% (256/256), done.
+dangling blob 3bd1f0e29744a1f32b08d5650e62e2e62afb177c
+
+$ mkdir /tmp/lost
+$ cd /tmp/lost
+$ git init -b main
+Initialized empty Git repository in /tmp/lost/.git/
+$ echo "foo" > file
+$ git add file
+$ git commit -m "Add some foo"
+[main (root-commit) 2d491f5] Add some foo
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+ create mode 100644 file
+
+$ git fsck
+Checking object directories: 100% (256/256), done.
+
+$ ls -R .git/objects
+.git/objects/:
+25  2d  4a  info  pack
+
+.git/objects/25:
+7cc5642cb1a054f08cc83f2d943e56fd3ebe99
+
+.git/objects/2d:
+491f5bbeed7c7e28290e93b5695ce4dd7401f1
+
+.git/objects/4a:
+1c03029e7407c0afe9fc0320b3258e188b115e
+
+.git/objects/info:
+
+.git/objects/pack:
+
+$ echo bar >> file
+$ git add file
+$ git commit -m "Add some bar"
+[main 66919fa] Add some bar
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+$ git reset --hard HEAD^
+HEAD is now at 2d491f5 Add some foo
+
+$ git fsck
+Checking object directories: 100% (256/256), done.
+
+# 学習のためにしていることで普通はこんなことをすべきではない
+$ rm -rf .git/logs
+$ git fsck
+Checking object directories: 100% (256/256), done.
+dangling commit 66919fae5a5f62afc0a349cc216bb0c59ffe37d0
+
+$ ls -R .git/objects
+.git/objects/:
+25   2d   3b   41   4a   66   info pack
+
+.git/objects/25:
+7cc5642cb1a054f08cc83f2d943e56fd3ebe99
+
+.git/objects/2d:
+491f5bbeed7c7e28290e93b5695ce4dd7401f1
+
+.git/objects/3b:
+d1f0e29744a1f32b08d5650e62e2e62afb177c
+
+.git/objects/41:
+31fe4d33cd85da805ac9a6697c2251c913881c
+
+.git/objects/4a:
+1c03029e7407c0afe9fc0320b3258e188b115e
+
+.git/objects/66:
+919fae5a5f62afc0a349cc216bb0c59ffe37d0
+
+.git/objects/info:
+
+.git/objects/pack:
+
+$ git show 66919fae
+commit 66919fae5a5f62afc0a349cc216bb0c59ffe37d0
+Author: Jon Loeliger <jdl@example.com>
+Date:   Sun Jul 10 17:16:28 2022 +0200
+
+Add some bar
+
+diff --git a/file b/file
+index 257cc56..3bd1f0e 100644
+--- a/file
++++ b/file
+@@ -1 +1,2 @@
+ foo
++bar
+
+# 上のindex行が参照しているブロブ3bd1f0eのコンテンツを見てみる
+
+$ git show 3bd1f0e
+foo
+bar
+
+$ echo baz >> file
+$ git add file
+$ git fsck
+Checking object directories: 100% (256/256), done.
+dangling commit 66919fae5a5f62afc0a349cc216bb0c59ffe37d0
+
+$ echo quux >> file
+$ git add file
+$ git fsck
+Checking object directories: 100% (256/256), done.
+dangling blob 0c071e1d07528f124e31f1b6c71348ec13f21a7a
+dangling commit 66919fae5a5f62afc0a349cc216bb0c59ffe37d0
+
+$ git show 0c071e1d
+foo
+baz

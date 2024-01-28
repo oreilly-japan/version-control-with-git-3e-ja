@@ -1,0 +1,151 @@
+## ======================================================================
+# 新しいリポジトリを初期化する
+$ pwd
+/tmp/git-lfs
+
+# Git LFSを構成する前の.gitディレクトリの内容
+$ tree .git
+.git
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── info
+│　 └── exclude
+├── objects
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 └── tags
+
+8 directories, 17 files
+
+# このリポジトリのためにGit LFSを構成する
+$ git lfs install
+Updated git hooks.
+Git LFS initialized.
+
+# Git LFSを構成したあとの.gitディレクトリの内容
+$ tree .git
+.git
+├── HEAD
+├── config
+├── description
+├── hooks
+│　 ├── applypatch-msg.sample
+│　 ├── commit-msg.sample
+│　 ├── fsmonitor-watchman.sample
+│　 ├── post-checkout
+│　 ├── post-commit
+│　 ├── post-merge
+│　 ├── post-update.sample
+│　 ├── pre-applypatch.sample
+│　 ├── pre-commit.sample
+│　 ├── pre-merge-commit.sample
+│　 ├── pre-push
+│　 ├── pre-push.sample
+│　 ├── pre-rebase.sample
+│　 ├── pre-receive.sample
+│　 ├── prepare-commit-msg.sample
+│　 ├── push-to-checkout.sample
+│　 └── update.sample
+├── info
+│　 └── exclude
+├── lfs
+│　 └── tmp
+├── objects
+│　 ├── info
+│　 └── pack
+└── refs
+　　 ├── heads
+　　 └── tags
+
+10 directories, 21 files
+
+# いくつか巨大ファイルを作る
+$ truncate -s 100M video1.mp4
+$ truncate -s 100M video2.mp4
+$ truncate -s 300M texture1.png
+$ truncate -s 350M texture2.png
+
+$ ls -al
+total 0
+drwxr-xr-x   7 ppremk  stax        224 Apr 24 16:36 .
+drwxr-xr-x   6 ppremk  stax        192 Apr 24 16:15 ..
+drwxr-xr-x  10 ppremk  stax        320 Apr 24 16:36 .git
+-rw-r--r--   1 ppremk  stax  314572800 Apr 24 16:36 texture1.png
+-rw-r--r--   1 ppremk  stax  367001600 Apr 24 16:36 texture2.png
+-rw-r--r--   1 ppremk  stax  104857600 Apr 24 16:35 video1.mp4
+-rw-r--r--   1 ppremk  stax  104857600 Apr 24 16:35 video2.mp4
+
+$ git status
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+    texture1.png
+    texture2.png
+    video1.mp4
+    video2.mp4
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+$ git lfs track "*.mp4" "*.png"
+Tracking "*.mp4"
+Tracking "*.png"
+
+$ cat .gitattributes
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+
+# .gitattributesのステージング、コミットは重要
+$ git add .gitattributes
+$ git commit -m "Add lfs tracking file"
+...
+
+# 通常と同じようにその他のファイルをステージング
+$ git add video1.mp4 video2.mp4 texture1.png texture2.png
+$ git commit -m "Add video and texture files"
+
+$ git log --oneline
+0c88d26 (HEAD -> main) Add video and texture files
+f134596 Add lfs tracking file
+
+# インデックスと作業ディレクトリのGit LFSファイルの情報を表示する
+$ git lfs ls-files
+17a88af837 * texture1.png
+37e130c167 * texture2.png
+20492a4d0d * video1.mp4
+20492a4d0d * video2.mp4
+
+$ tree .git/lfs
+.git/lfs
+├── objects
+│　 ├── 17
+│　 │　 └── a8
+│　 │　　　　└── 17a88af83717f68b8bd97873ffcf022c8aed703416fe9b08e0fa9e3287692bf0
+│　 ├── 20
+│　 │　 └── 49
+│　 │　　　　└── 20492a4d0d84f8beb1767f6616229f85d44c2827b64bdbfb260ee12fa1109e0e
+│　 └── 37
+│　　　　└── e1
+│　　　　　　 └── 37e130c1679c21acfe85c2c2f30aba984c910d389c8df9340b5bc4455f809220
+└── tmp
+
+8 directories, 3 files

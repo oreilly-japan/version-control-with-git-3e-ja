@@ -1,0 +1,16 @@
+## ======================================================================
+# git cat-fileコマンドを使う
+$ git cat-file -p 3b18e512dba79e4c8300dd08aeb37f8e728b8dad
+hello world
+
+# git hash-objectコマンドを使う
+$ echo "hello world" | git hash-object --stdin
+3b18e512dba79e4c8300dd08aeb37f8e728b8dad
+
+## ======================================================================
+$ git rev-parse 3b18e512d
+3b18e512dba79e4c8300dd08aeb37f8e728b8dad
+
+## ======================================================================
+$ printf "blob 12\x00hello world\n" | sha1sum
+3b18e512dba79e4c8300dd08aeb37f8e728b8dad  -

@@ -1,0 +1,35 @@
+## ======================================================================
+$ cd example-subtree && ls
+LICENSE             README.md           another-new-file.md new-file.md
+
+# GitHub WebUIで直接新しいファイルを追加しておくこと
+
+$ cd ..
+
+$ git subtree pull --prefix=example-subtree subremote-origin main --squash
+remote: Enumerating objects: 18, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (15/15), done.
+remote: Total 18 (delta 6), reused 4 (delta 0), pack-reused 0
+Unpacking objects: 100% (18/18), 3.50 KiB | 511.00 KiB/s, done.
+From https://github.com/ppremk/example-subtree
+ * branch            main       -> FETCH_HEAD
+ * [new branch]      main       -> subremote-origin/main
+Merge made by the 'ort' strategy.
+ example-subtree/sparkling-file.md | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 example-subtree/sparkling-file.md
+
+# スーパープロジェクト内のマージコミットとして
+# サブプロジェクトの圧縮された更新が追加されている
+$ git log --oneline --graph
+*   c468ae8 (HEAD -> main) Merge commit '8bc211...'
+|\
+| * 8bc211a Squashed 'example-subtree/' changes from 08d39b1..ff9255a
+* | 525f638 Merge commit '5d3ce7a...' as 'example-subtree'
+|\|
+| * 5d3ce7a Squashed 'example-subtree/' content from commit 08d39b1
+* a5b6866 Initial commit
+
+$ cd example-subtree && ls
+LICENSE    README.md    another-new-file.md new-file.md    parkling-file.md

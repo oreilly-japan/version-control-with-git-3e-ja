@@ -1,0 +1,12 @@
+## ======================================================================
+# altがすでにmainにマージされていることを示す
+$ git show-branch
+! [alt] One world
+ * [main] Merge branch 'alt'
+--
+ - [main] Merge branch 'alt'
++* [alt] One world
+
+# altを再度mainにマージしようとする
+$ git merge alt
+Already up to date.

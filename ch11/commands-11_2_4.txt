@@ -1,0 +1,29 @@
+## ======================================================================
+$ git push origin main
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 343 bytes | 343.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To /tmp/Depot/my_website
+    7e876fd..2daf640  main -> main
+
+$ git show-branch -a
+* [main] Add a new poem
+ ! [origin/main] Add a new poem
+--
+*+ [main] Add a new poem
+
+$ cd /tmp/Depot/my_website.git
+$ git show-branch
+[main] Add a new poem
+
+$ cd ~/my_website
+$ git ls-remote
+From /tmp/Depot/my_website
+2daf64034a769ee02f8cedd9fcb2e43b04fe7c17    HEAD
+2daf64034a769ee02f8cedd9fcb2e43b04fe7c17    refs/heads/main
+
+$ git rev-parse HEAD
+2daf64034a769ee02f8cedd9fcb2e43b04fe7c17

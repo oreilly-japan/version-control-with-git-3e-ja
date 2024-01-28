@@ -1,0 +1,37 @@
+## ======================================================================
+# サブプロジェクトディレクトリで変更を加える。
+$ cd example-subtree
+
+$ touch just-file.md
+
+$ git add just-file.md
+$ git commit -m "Add just file from superproject"
+[main 0408fed] Add just file from superproject
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 example-subtree/just-file.md
+
+$ git log --oneline --graph
+* 0408fed (HEAD -> main) Add just file from superproject
+*   c468ae8 (HEAD -> main) Merge commit '8bc211...'
+|\
+| * 8bc211a Squashed 'example-subtree/' changes from 08d39b1..ff9255a
+* | 525f638 Merge commit '5d3ce7a...' as 'example-subtree'
+|\|
+| * 5d3ce7a Squashed 'example-subtree/' content from commit 08d39b1
+* a5b6866 Initial commit
+
+# プッシュのためのコマンドはスーパープロジェクトのディレクトリで
+# 実行しなければならない
+$ cd ..
+
+$ git subtree push --prefix=example-subtree subremote-origin main
+git push using:  subremote-origin main
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 251 bytes | 251.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/ppremk/example-subtree.git
+   ff9255a..3b0c49a  3b0c49a978fe67f811943b778aaa5b3f867a0cf1 -> main

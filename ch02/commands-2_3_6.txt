@@ -1,0 +1,13 @@
+## ======================================================================
+$ echo -n "Commit a file that says hello\n" | git commit-tree 492413269336d21fac079d4a4672e55d5d2147ac
+3ede4622cc241bcb09683af36360e7413b9ddf6c
+
+$ git cat-file -p 3ede462
+tree 492413269336d21fac079d4a4672e55d5d2147ac
+author Jon Loeliger <jdl@example.com> 1656932750 +0200
+committer Jon Loeliger <jdl@example.com> 1656932750 +0200
+
+Commit a file that says hello
+
+## ======================================================================
+$ git show --pretty=fuller

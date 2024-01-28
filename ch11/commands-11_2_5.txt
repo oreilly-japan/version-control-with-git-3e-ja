@@ -1,0 +1,83 @@
+## ======================================================================
+$ cd /tmp/lisa
+$ git clone /tmp/Depot/my_website.git
+Cloning into 'my_website'...
+done.
+
+$ ls
+my_website
+$ cd my_website
+
+$ ls
+fuzzy.txt  index.html  poem.html  techinfo.txt
+
+$ git branch
+* main
+
+$ git log -1
+commit 6f168803f6f1b987dffd5fff77531dcadf7f4b68
+Author: Jon Loeliger <jdl@example.com>
+Date:   Sat Nov 6 18:57:37 2021 +0100
+
+    Add a new poem
+
+$ git remote show origin
+* remote origin
+Fetch URL: /tmp/Depot/my_website.git
+Push  URL: /tmp/Depot/my_website.git
+HEAD branch: main
+Remote branch:
+  main tracked
+Local branch configured for 'git pull':
+  main merges with remote main
+Local ref configured for 'git push':
+  main pushes to main (up to date)
+
+$ cat .git/config
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = false
+        logallrefupdates = true
+        ignorecase = true
+        precomposeunicode = true
+[remote "origin"]
+        url = /tmp/Depot/my_website.git
+        fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+        remote = origin
+        merge = refs/heads/main
+
+$ git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+$ git branch -vv
+* main 2daf640 [origin/main] Add a new poem
+
+$ git diff
+diff --git a/fuzzy.txt b/fuzzy.txt
+index 0d601fa..608ab5b 100644
+--- a/fuzzy.txt
++++ b/fuzzy.txt
+@@ -1,4 +1,4 @@
+ Fuzzy Wuzzy was a bear
+ Fuzzy Wuzzy had no hair
+ Fuzzy Wuzzy wasn't very fuzzy,
+-Was he?
++Wuzzy?
+
+$ git commit fuzzy.txt
+[main a5f8133] Make the name pun complete!
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 330 bytes | 330.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+To /tmp/Depot/my_website.git
+   2daf640..a5f8133  main -> main

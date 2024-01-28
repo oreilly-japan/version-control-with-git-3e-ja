@@ -1,0 +1,17 @@
+## ======================================================================
+$ git blame -L 35, init/version.c
+4865ecf1315b4 (Serge E. Hallyn 2006-10-02 02:18:14 -0700 35)    },
+^1da177e4c3f4 (Linus Torvalds  2005-04-16 15:20:36 -0700 36) };
+4865ecf1315b4 (Serge E. Hallyn 2006-10-02 02:18:14 -0700 37) EXPORT_SYMBOL_GPL(init_uts_ns);
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 38)
+c71551ad309c4 (Linus Torvalds  2007-01-11 18:18:04 -0800 39) /* FIXED STRINGS! Don't touch! */
+c71551ad309c4 (Linus Torvalds  2007-01-11 18:18:04 -0800 40) const char linux_banner[] =
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 41)    "Linux version " UTS_RELEASE " (" LINUX_COMPILE_BY "@"
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 42)    LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION "\n";
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 43)
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 44) const char linux_proc_banner[] =
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 45)    "%s version %s"
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 46)    " (" LINUX_COMPILE_BY "@" LINUX_COMPILE_HOST ")"
+3eb3c740f51c2 (Roman Zippel    2007-01-10 14:45:28 +0100 47)    " (" LINUX_COMPILER ") %s\n";
+
+$ git blame --since=1.weeks -- file

@@ -1,0 +1,307 @@
+## ======================================================================
+$ git add -p somefile
+
+$ mkdir /tmp/histogram
+$ cd /tmp/histogram
+$ git init -b main
+Initialized empty Git repository in /tmp/histogram/.git/
+$ git add main.c Makefile .gitignore
+
+$ git commit -m "Initial histogram program."
+[main (root-commit) 42300e7] Initial histogram program.
+ 3 files changed, 18 insertions(+), 0 deletions(-)
+ create mode 100644 .gitignore
+ create mode 100644 Makefile
+ create mode 100644 main.c
+
+$ git diff
+diff --git a/main.c b/main.c
+index 9243ccf..b07f5dd 100644
+--- a/main.c
++++ b/main.c
+@@ -1,7 +1,27 @@
+ #include <stdio.h>
++#include <stdlib.h>
++
++struct htentry {
++       char *item;
++       int count;
++       struct htentry *next;
++};
++
++struct htentry ht_table[256];
++
++void ht_init(void)
++{
++       /* FIXME: 詳細はまだ */
++}
+
+ int main(int argc, char **argv)
+ {
++       FILE *f;
++
++       f = fopen(argv[1], "r");
++       if (f == 0)
++               exit(-1);
++
+    /*
+     * ファイルに含まれる単語のヒストグラムを出力する。
+     * "Words"は空白で区切られた文字列である。
+@@ -9,4 +29,6 @@ int main(int argc, char **argv)
+     * FIXME: まだ実装なし!
+     */
+    printf("Histogram of words\n");
++
++       ht_init();
+ }
+
+$ git add -p
+diff --git a/main.c b/main.c
+index 4809266..c60b800 100644
+--- a/main.c
++++ b/main.c
+@@ -1,7 +1,27 @@
+ #include <stdio.h>
++#include <stdlib.h>
++
++struct htentry {
++    char *item;
++    int count;
++    struct htentry *next;
++};
++
++struct htentry ht_table[256];
++
++void ht_init(void)
++{
++    /* FIXME: 詳細はまだ */
++}
+
+ int main(int argc, char **argv)
+ {
++    FILE *f;
++
++    f = fopen(argv[1], "r");
++    if (f == 0)
++        exit(-1);
++
+     /*
+      * ファイルに含まれる単語のヒストグラムを出力する。
+      * "Words"は空白で区切られた文字列である。
+(1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,s,e,?]? s
+Split into 2 hunks.
+@@ -1,4 +1,18 @@
+ #include <stdio.h>
++#include <stdlib.h>
++
++struct htentry {
++    char *item;
++    int count;
++    struct htentry *next;
++};
++
++struct htentry ht_table[256];
++
++void ht_init(void)
++{
++    /* FIXME: 詳細はまだ */
++}
+
+ int main(int argc, char **argv)
+ {
+(1/3) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? y
+@@ -2,6 +16,12 @@
+
+ int main(int argc, char **argv)
+ {
++    FILE *f;
++
++    f = fopen(argv[1], "r");
++    if (f == 0)
++        exit(-1);
++
+     /*
+      * ファイルに含まれる単語のヒストグラムを出力する。
+      * "Words"は空白で区切られた文字列である。
+(2/3) Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? n
+@@ -9,4 +29,6 @@ int main(int argc, char **argv)
+     * FIXME: まだ実装なし!
+     */
+    printf("Histogram of words\n");
++
++    ht_init();
+ }
+(3/3) Stage this hunk [y,n,q,a,d,K,g,/,e,?]? y
+
+$ git diff --staged
+diff --git a/main.c b/main.c
+index 4809266..8a95bb0 100644
+--- a/main.c
++++ b/main.c
+@@ -1,4 +1,18 @@
+ #include <stdio.h>
++#include <stdlib.h>
++
++struct htentry {
++       char *item;
++       int count;
++       struct htentry *next;
++};
++
++struct htentry ht_table[256];
++
++void ht_init(void)
++{
++       /* FIXME: 詳細はまだ */
++}
+
+ int main(int argc, char **argv)
+ {
+@@ -9,4 +23,6 @@ int main(int argc, char **argv)
+     * FIXME: まだ実装なし!
+     */
+    printf("Histogram of words\n");
++
++       ht_init();
+ }
+
+$ git commit -m "Introduce a Hash Table."
+[main 66a212c] Introduce a Hash Table.
+ 1 files changed, 16 insertions(+), 0 deletions(-)
+
+$ git diff
+diff --git a/main.c b/main.c
+index 8a95bb0..c60b800 100644
+--- a/main.c
++++ b/main.c
+@@ -16,6 +16,12 @@ void ht_init(void)
+
+ int main(int argc, char **argv)
+ {
++       FILE *f;
++
++       f = fopen(argv[1], "r");
++       if (f == 0)
++               exit(-1);
++
+     /*
+      * ファイルに含まれる単語のヒストグラムを出力する。
+      * "Words"は空白で区切られた文字列である。
+
+$ git add main.c
+$ git commit -m "Open the word source file."
+[main e649d27] Open the word source file.
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+$ git log --graph --oneline
+* e649d27 (HEAD -> main) Open the word source file.
+* 66a212c Introduce a Hash Table.
+* 3ba81f7 Initial histogram program.
+
+# あなたの環境ではコミットIDが異なっているはずなので適宜読み替えて実行してほしい。
+$ git reset 3ba81f7
+Unstaged changes after reset:
+M    main.c
+
+$ git add -p
+diff --git a/main.c b/main.c
+index 4809266..c60b800 100644
+--- a/main.c
++++ b/main.c
+@@ -1,7 +1,27 @@
+ #include <stdio.h>
++#include <stdlib.h>
++
++struct htentry {
++    char *item;
++    int count;
++    struct htentry *next;
++};
++
++struct htentry ht_table[256];
++
++void ht_init(void)
++{
++    /* FIXME: 詳細はまだ */
++}
+
+ int main(int argc, char **argv)
+ {
++    FILE *f;
++
++    f = fopen(argv[1], "r");
++    if (f == 0)
++        exit(-1);
++
+    /*
+     * ファイルに含まれる単語のヒストグラムを出力する。
+     * "Words"は空白で区切られた文字列である。
+(1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,s,e,?]? s
+Split into 2 hunks.
+@@ -1,4 +1,18 @@
+ #include <stdio.h>
++#include <stdlib.h>
++
++struct htentry {
++    char *item;
++    int count;
++    struct htentry *next;
++};
++
++struct htentry ht_table[256];
++
++void ht_init(void)
++{
++    /* FIXME: 詳細はまだ */
++}
+
+ int main(int argc, char **argv)
+ {
+(1/3) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? e
+@@ -2,6 +16,12 @@
+
+ int main(int argc, char **argv)
+ {
++    FILE *f;
++
++    f = fopen(argv[1], "r");
++    if (f == 0)
++        exit(-1);
++
+    /*
+     * ファイルに含まれる単語のヒストグラムを出力する。
+     * "Words"は空白で区切られた文字列である。
+(2/3) Stage this hunk [y,n,q,a,d,K,j,J,g,/,e,?]? n
+@@ -9,4 +29,6 @@ int main(int argc, char **argv)
+     * FIXME: まだ実装なし!
+     */
+    printf("Histogram of words\n");
++
++    ht_init();
+ }
+(3/3) Stage this hunk [y,n,q,a,d,K,g,/,e,?]? y
+
+$ git diff
+diff --git a/main.c b/main.c
+index 3e77315..c60b800 100644
+--- a/main.c
++++ b/main.c
+@@ -1,4 +1,5 @@
+ #include <stdio.h>
++#include <stdlib.h>
+
+ struct htentry {
+    char *item;
+@@ -15,6 +16,12 @@ void ht_init(void)
+
+ int main(int argc, char **argv)
+ {
++       FILE *f;
++
++       f = fopen(argv[1], "r");
++       if (f == 0)
++               exit(-1);
++
+    /*
+     * ファイルに含まれる単語のヒストグラムを出力する。
+     * "Words"は空白で区切られた文字列である。

@@ -1,0 +1,91 @@
+## ======================================================================
+$ mkdir /tmp/rebase
+$ cd /tmp/rebase
+$ git init -b main
+Initialized empty Git repository in /tmp/rebase/.git/
+
+$ cat haiku
+Talk about colour
+No jealous behaviour here
+
+$ git add haiku
+$ git commit -m "Start my haiku"
+[main (root-commit) 1cc856c] Start my haiku
+ 1 file changed, 2 insertions(+)
+ create mode 100644 haiku
+
+$ git diff
+diff --git a/haiku b/haiku
+index 088bea0..958aff0 100644
+--- a/haiku
++++ b/haiku
+@@ -1,2 +1,2 @@
+-Talk about colour
++Talk about color
+ No jealous behaviour here
+
+$ git commit -a -m "Use color instead of colour"
+[main b2c5047] Use color instead of colour
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git diff
+diff --git a/haiku b/haiku
+index 958aff0..cdeddf9 100644
+--- a/haiku
++++ b/haiku
+@@ -1,2 +1,3 @@
+ Talk about color
+ No jealous behaviour here
++I favour red wine
+
+$ git commit -a -m "Finish my colour haiku"
+[main e0d8d39] Finish my colour haiku
+ 1 file changed, 1 insertion(+)
+
+$ git diff
+diff --git a/haiku b/haiku
+index cdeddf9..064c1b5 100644
+--- a/haiku
++++ b/haiku
+@@ -1,3 +1,3 @@
+ Talk about color
+-No jealous behaviour here
+-I favour red wine
++No jealous behavior here
++I favor red wine
+
+$ git commit -a -m "Use American spellings"
+[main 0aff702] Use American spellings
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+$ git show-branch --more=4
+[main] Use American spellings
+[main^] Finish my colour haiku
+[main~2] Use color instead of colour
+[main~3] Start my haiku
+
+$ git rebase -i main~3
+
+# 最初の2コミットの順序を逆にしてエディタを終了
+
+Successfully rebased and updated refs/heads/main.
+
+$ git show-branch --more=4
+[main] Use American spellings
+[main^] Use color instead of colour
+[main~2] Finish my colour haiku
+[main~3] Start my haiku
+
+$ git rebase -i main~3
+
+# コミットを結合しコミットメッセージを編集
+
+[detached HEAD 0692bda] Use American spellings
+ Date: Sun Oct 3 14:36:00 2021 +0200
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+Successfully rebased and updated refs/heads/main.
+
+$ git show-branch --more=4
+[main] Use American spellings
+[main^] Finish my colour haiku
+[main~2] Start my haiku

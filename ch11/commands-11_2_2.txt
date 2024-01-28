@@ -1,0 +1,35 @@
+## ======================================================================
+$ cd ~/my_website
+$ cat .git/config
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = false
+        logallrefupdates = true
+
+$ cd ~/my_website
+$ git remote add origin /tmp/Depot/my_website
+
+$ cat .git/config
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = false
+        logallrefupdates = true
+[remote "origin"]
+        url = /tmp/Depot/my_website
+        fetch = +refs/heads/*:refs/remotes/origin/*
+
+# ローカルリポジトリのすべてのブランチを表示する
+
+$ git branch -a
+* main
+
+$ git remote update
+Fetching origin
+From /tmp/Depot/my_website
+ * [new branch]      main     -> origin/main
+
+$ git branch -a
+* main
+  remotes/origin/main

@@ -1,0 +1,25 @@
+## ======================================================================
+# Gitソースリポジトリ
+$ cd ~/Repos/git
+$ git whatchanged --since="three days ago" --oneline
+745950c p4000: use -3000 when promising -3000
+:100755 100755 d6e505c... 7e00c9d... M  t/perf/p4000-diff-algorithms.sh
+42e52e3 Update draft release notes to 1.7.10
+:100644 100644 ae446e0... a8fd0ac... M  Documentation/RelNotes/1.7.10.txt
+561ae06 perf: export some important test-lib variables
+:100755 100755 f8dd536... cf8e1ef... M  t/perf/p0000-perf-lib-sanity.sh
+:100644 100644 bcc0131... 5580c22... M  t/perf/perf-lib.sh
+1cbc324 perf: load test-lib-functions from the correct directory
+:100755 100755 2ca4aac... f8dd536... M  t/perf/p0000-perf-lib-sanity.sh
+:100644 100644 2a5e1f3... bcc0131... M  t/perf/perf-lib.sh
+
+$ git whatchanged ORIG_HEAD..HEAD
+
+$ cd /usr/src/linux
+$ git pull
+
+$ git whatchanged ORIG_HEAD..HEAD --oneline Makefile
+fde7d90 Linux 3.3-rc7
+:100644 100644 66d13c9... 56d4817... M  Makefile
+192cfd5 Linux 3.3-rc6
+:100644 100644 b61a963... 66d13c9... M  Makefile

@@ -1,0 +1,8 @@
+## ======================================================================
+$ git checkout topic
+$ git rebase main
+
+$ git rebase main topic
+
+## ======================================================================
+$ git rebase --onto main maint^ feature

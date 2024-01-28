@@ -1,0 +1,32 @@
+## ======================================================================
+$ mkdir /tmp/conflict
+$ cd /tmp/conflict
+$ git init -b main
+Initialized empty Git repository in /tmp/conflict/.git/
+
+$ echo hello > hello
+$ git add hello
+$ git commit -m "Initial hello file"
+[main (root-commit) e8a1845] Initial hello file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hello
+
+$ git checkout -b alt
+Switched to a new branch "alt"
+$ echo world >> hello
+$ echo 'Yay!' >> hello
+$ git commit -a -m "One world"
+[alt 84e436c] One world
+ 1 file changed, 2 insertions(+)
+
+$ git checkout main
+$ echo worlds >> hello
+$ echo 'Yay!' >> hello
+$ git commit -a -m "All worlds"
+[main 0d7dfb7] All worlds
+ 1 file changed, 2 insertions(+)
+
+$ git merge alt
+Auto-merging hello
+CONFLICT (content): Merge conflict in hello
+Automatic merge failed; fix conflicts and then commit the result.

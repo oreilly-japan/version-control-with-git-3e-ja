@@ -1,0 +1,5 @@
+## ======================================================================
+$ git push
+To /tmp/Depot/my_website
+ ! [rejected]        main -> main (non-fast forward)
+error: failed to push some refs to '/tmp/Depot/my_website'

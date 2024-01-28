@@ -1,0 +1,44 @@
+## ======================================================================
+$ git show-branch --more=10
+[main] Tinker bar
+[main^] Squash into 'More foo and bar'
+[main~2] Modify bar
+[main~3] More foo and bar
+[main~4] Initial foo and bar.
+
+$ git rebase -i main~4
+error: cannot rebase: You have unstaged changes.
+error: Please commit or stash them.
+
+$ git stash
+Saved working directory and index state WIP on main: ed6e906 Tinker bar
+
+$ git rebase -i main~4
+
+# エディタ内でmain^をmain~3の次に移動し
+# スカッシュのマークを入れる
+
+pick 1a4be28 More foo and bar
+squash 6195b3d Squash into 'more foo and bar'
+pick 488b893 Modify bar
+pick ed6e906 Tinker bar
+
+# テキストエディタに表示された指示に従う
+
+[detached HEAD e3c46b8] More foo and bar with additional stuff.
+ Date: Sun Mar 27 16:18:02 2022 +0200
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file2
+ create mode 100644 file4
+Successfully rebased and updated refs/heads/main.
+
+$ git stash pop
+# On branch main
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#    modified:   foo
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (71b4655668e49ce88686fc9eda8432430b276470)

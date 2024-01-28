@@ -1,0 +1,84 @@
+## ======================================================================
+$ git log --pretty=one --abbrev-commit
+d5ef6c9 Some commit.
+efe990c Initial commit.
+
+$ git stash
+Saved working directory and index state WIP on main: d5ef6c9 Some commit.
+
+$ git log --pretty=one --abbrev-commit
+2c2af13 Another mod
+1d1e905 Drifting file state.
+d5ef6c9 Some commit.
+efe990c Initial commit.
+
+$ git show-branch -a
+[main] Another mod
+
+$ git stash list
+stash@{0}: WIP on main: d5ef6c9 Some commit.
+
+$ git stash pop
+Auto-merging foo
+CONFLICT (content): Merge conflict in foo
+Auto-merging bar
+CONFLICT (content): Merge conflict in bar
+The stash entry is kept in case you need it again.
+
+$ git reset --hard main
+HEAD is now at 2c2af13 Another mod
+
+$ git stash branch mod
+Switched to a new branch 'mod'
+On branch mod
+Changes not staged for commit:
+   (use "git add <file>..." to update what will be committed)
+   (use "git restore -- <file>..." to discard changes in working directory)
+
+    modified:   bar
+    modified:   foo
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (96e53da61f7e5031ef04d68bf60a34bd4f13bd9f)
+
+$ git show-branch -a
+! [main] Another mod
+ * [mod] Some commit.
+--
++  [main] Another mod
++  [main^] Drifting file state.
++* [mod] Some commit.
+
+$ git commit --dry-run
+# On branch mod
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#    modified:   bar
+#    modified:   foo
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git commit -a -m "Stuff from the stash"
+[mod 42c104f] Stuff from the stash
+ 2 files changed, 2 insertions(+), 0 deletions(-)
+
+$ git show-branch
+! [main] Another mod
+ * [mod] Stuff from the stash
+--
+ * [mod] Stuff from the stash
++  [main] Another mod
++  [main^] Drifting file state.
++* [mod^] Some commit.
+
+$ git checkout main
+Switched to branch 'main'
+
+$ git merge mod
+Auto-merging foo
+CONFLICT (content): Merge conflict in foo
+Auto-merging bar
+CONFLICT (content): Merge conflict in bar
+Automatic merge failed; fix conflicts and then commit the result.

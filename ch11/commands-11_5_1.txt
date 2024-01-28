@@ -1,0 +1,98 @@
+## ======================================================================
+# Gitのソースコードリポジトリのクローンを作る
+$ git clone https://github.com/git/git.git
+Cloning into 'git'...
+...
+
+$ cd git
+
+# 別のサーバーの同じリポジトリのために第2のリモートを追加する
+$ git remote add korg git://git.kernel.org/pub/scm/git/git.git
+
+$ git remote update
+Fetching origin
+remote: Enumerating objects: 931, done.
+remote: Counting objects: 100% (759/759), done.
+remote: Compressing objects: 100% (130/130), done.
+remote: Total 931 (delta 650), reused 726 (delta 629), pack-reused 172
+Receiving objects: 100% (931/931), 918.29 KiB | 6.47 MiB/s, done.
+Resolving deltas: 100% (676/676), completed with 142 local objects.
+From https://github.com/git/git
+   ...
+   ...
+Fetching korg
+From git://git.kernel.org/pub/scm/git/git
+ * [new branch]            main       -> korg/main
+ * [new branch]            maint      -> korg/maint
+ * [new branch]            master     -> korg/master
+ * [new branch]            next       -> korg/next
+ * [new branch]            seen       -> korg/seen
+ * [new branch]            todo       -> korg/todo
+
+# 一意な名前を持つブランチを探し出してチェックアウトする
+$ git branch -a | grep split-blob
+  remotes/origin/jc/split-blob
+
+$ git branch
+* main
+
+$ git checkout jc/split-blob
+branch 'jc/split-blob' set up to track 'jc/split-blob'
+Switched to a new branch 'jc/split-blob'
+
+$ git branch
+* jc/split-blob
+  main
+
+$ git branch -a | egrep 'maint$'
+  remotes/korg/maint
+  remotes/origin/maint
+
+$ git checkout maint
+hint: If you meant to check out a remote tracking branch on, e.g. 'origin',
+...
+...
+...
+fatal: 'maint' matched multiple (2) remote tracking branches
+
+# 片方のmaintブランチを選択する
+$ git checkout --track korg/maint
+branch 'maint' set up to track 'korg/maint'.
+Switched to a new branch 'maint'
+
+$ git branch --track mynext korg/next
+branch 'mynext' set up to track 'korg/next'.
+
+$ cat .git/config
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = false
+    logallrefupdates = true
+    ignorecase = true
+    precomposeunicode = true
+[remote "origin"]
+    url = https://github.com/git/git.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+    remote = origin
+    merge = refs/heads/main
+[remote "korg"]
+    url = git://git.kernel.org/pub/scm/git/git.git
+    fetch = +refs/heads/*:refs/remotes/korg/*
+[branch "jc/split-blob"]
+    remote = origin
+    merge = refs/heads/jc/split-blob
+[branch "maint"]
+    remote = korg
+    merge = refs/heads/maint
+[branch "mynext"]
+    remote = korg
+    merge = refs/heads/next
+
+# 既存のリポジトリのルートディレクトリから次のコマンドを実行する
+$ git remote add upstreamrepo git://git.example.org/upstreamrepo.git
+# origin/devという異なるリモートを持つ既存ブランチ
+# 内容はそのままで、upstreamrepo/devに対応づける
+$ git branch --set-upstream-to=upstreamrepo/dev
+branch dev set up to track 'upstreamrepo/dev'.

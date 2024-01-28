@@ -1,0 +1,74 @@
+## ======================================================================
+# 新しいリポジトリを初期化する
+$ mkdir merge-conflict
+$ cd merge-conflict
+$ git init -b main
+Initialized empty Git repository in .../merge-conflict/.git/
+
+# 新しいファイルを作る
+$ cat > file
+Line 1 stuff
+Line 2 stuff
+Line 3 stuff
+^D
+
+# ファイルを追加、コミットする
+$ git add file
+$ git commit -m "Initial 3 line file"
+[main (root-commit) 21a352e] Initial 3 line file
+ 1 file changed, 3 insertions(+)
+ create mode 100644 file
+
+$ cat > other_file
+Here is stuff on another file!
+^D
+
+$ git add other_file
+$ git commit -m "Another file"
+[main e5d26c6] Another file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 other_file
+
+$ git checkout -b alternate main^
+Switched to a new branch "alternate"
+
+$ git show-branch
+* [alternate] Initial 3 line file
+ ! [main] Another file
+--
+ + [main] Another file
+*+ [alternate] Initial 3 line file
+
+$ cat >> file
+Line 4 alternate stuff
+^D
+
+$ git commit -a -m "Add alternate's line 4"
+[alternate 97e7ffe] Add alternate's line 4
+ 1 file changed, 1 insertion(+)
+
+$ git checkout main
+Switched to branch "main"
+
+# 作業ディレクトリとインデックスがダーティ状態になっていないことをチェックする
+$ git status
+On branch main
+nothing to commit, working tree clean
+
+# よし、マージできる
+
+# 次のコマンドを入力してリターンキーを押すと、Gitはデフォルトエディタを
+# 起動してデフォルトマージメッセージを表示するので、メッセージを保存して
+# 作業を続行する
+$ git merge alternate
+Merge made by the 'ort' strategy.
+ file | 1 +
+ 1 file changed, 1 insertion(+)
+
+$ git log --graph --decorate --pretty=oneline --abbrev-commit
+*   2dce921 (HEAD -> main) Merge branch 'alternate'
+|\
+| * 97e7ffe (alternate) Add alternate's line 4
+* | e5d26c6 Another file
+|/
+* 21a352e Initial 3 line file

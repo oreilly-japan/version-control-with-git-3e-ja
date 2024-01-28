@@ -1,0 +1,99 @@
+## ======================================================================
+# 作業用にオーサー名とメールアドレスを書き換えたいリポジトリをクローンする
+$ git clone https://github.com/<ユーザー名>/<リポジトリ名>.git
+...
+
+# トラブルに備えてバックアップ用にもクローンしておく
+$ mkdir backup
+$ cd backup
+$ git clone https://github.com/<ユーザー名>/<リポジトリ名>.git
+...
+$ cd ../<リポジトリ名>
+
+# オーサー名とメールアドレスの変換テーブルとなるmailmapファイルを作成しておく。
+# mailmapファイルのフォーマットはgit help gitmailmapコマンドで表示される
+# ドキュメントで解説されている。
+$ cat mailmap
+New Name <new@example.com> Old Name <old@example.jp>
+
+# あとで再設定が必要なためリモートの設定を確認しておく
+$ git remote -v
+origin  https://github.com/<ユーザー名>/<リポジトリ名>.git (fetch)
+origin  https://github.com/<ユーザー名>/<リポジトリ名>.git (push)
+
+# 同様にデフォルトブランチ（「remotes/origin/HEAD -> origin/****」の行、
+# これはgit cloneした際に設定される）とリモート追跡ブランチの設定
+# （「remotes/origin/****」の行）も確認しておく
+$ git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+
+# コミットログの書き換え（すべてのブランチの場合）
+#
+# 書き換えを実行する。ブランチを指定しない場合はすべてのブランチのコミットログが
+# 書き換えられる。書き換え後のリポジトリをむやみにプッシュしてトラブルが発生する
+# のを防止するため、git filter-repoはoriginのリモート、デフォルトブランチ、
+# リモート追跡ブランチの設定を自動的に削除する。
+$ git filter-repo -f --mailmap mailmap
+...
+
+# コミットログの書き換え（mainブランチのみの場合）
+#
+# 特定のブランチのコミットログのみを書き換えたい場合は--refsオプションでブランチ
+# を指定する。--refsオプションを使用する際はリモート、デフォルトブランチ、上流
+# ブランチの設定は削除されない。
+$ git filter-repo -f --mailmap mailmap --refs main
+...
+
+# コミットログのオーサー名とメールアドレスが正しく書き換えられていることを確認する
+$ git log
+...
+
+# すべてのブランチのコミットログを書き換えた場合、リモート、デフォルトブランチ、
+# リモート追跡ブランチの設定はgit filter-repoを実行した際に削除されるため
+# 表示されない
+$ git remote -v
+$ git branch -a
+* main
+
+# リモートが削除されている場合は再設定する
+$ git remote add origin https://github.com/<ユーザー名>/<リポジトリ名>.git
+
+# リモートの設定を確認する
+$ git remote -v
+origin  https://github.com/<ユーザー名>/<リポジトリ名>.git (fetch)
+origin  https://github.com/<ユーザー名>/<リポジトリ名>.git (push)
+
+# このあとプッシュする際にローカルrefとリモートrefを比較するためにGitHubから
+# フェッチする。このときにリモート追跡ブランチが再設定される。
+$ git fetch
+...
+
+# リモート追跡ブランチが再設定された
+$ git branch -a
+* main
+  remotes/origin/main
+
+# GitHubにプッシュする（すべてのブランチをプッシュする場合）
+#
+# コミットログを書き換えているため--force-with-leaseオプションをつけて強制的
+# にプッシュする。--force-with-leaseオプションはローカルrefとリモートrefを
+# 比較して、ローカルrefが最新の状態でない場合はプッシュが失敗する。そのため-f
+# オプションを使うよりも安全である。
+$ git push --force-with-lease origin --all
+...
+
+# GitHubにプッシュする（mainブランチのみの場合）
+$ git push --force-with-lease origin main
+...
+
+# デフォルトブランチが削除されている場合はGitHubから取得して再設定する
+$ git remote set-head origin -a
+...
+
+# デフォルトブランチも元通り再設定された
+$ git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main

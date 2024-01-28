@@ -1,0 +1,44 @@
+## ======================================================================
+# ~/my_websiteはすでにGitリポジトリになっているものとする
+$ cd /tmp/Depot/
+$ git clone --bare ~/my_website my_website.git
+Cloning into bare repository 'my_website.git'...
+done.
+
+$ cd ~/my_website/
+$ ls -aF
+./   fuzzy.txt  index.html  techinfo.txt
+../  .git/      poem.html
+
+# 注意：あなたの出力は異なる場合がある
+$ ls -aF .git
+./      HEAD        hooks/      logs/
+../     config      index       objects/
+COMMIT_EDITMSG  description info/       refs/
+
+$ cd /tmp/Depot/
+
+$ ls -aF my_website.git
+./      HEAD        description info/       packed-refs
+../     config      hooks/      objects/    refs/
+
+# /tmp/Depot/my_website.gitで実行すること
+
+$ cat config
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = true
+        ignorecase = true
+        precomposeunicode = true
+[remote "origin"]
+        url = ~/users/my_website
+
+$ git remote remove origin
+$ cat config
+[core]
+        repositoryformatversion = 0
+        filemode = true
+        bare = true
+        ignorecase = true
+        precomposeunicode = true

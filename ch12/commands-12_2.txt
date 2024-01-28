@@ -1,0 +1,13 @@
+## ======================================================================
+$ ssh git.my-host.example.com
+
+$ cd /git
+$ mkdir newrepo.git
+$ cd newrepo.git
+$ git init --shared --bare
+
+$ git --git-dir /git/newrepo.git init --shared --bare
+
+# ユーザーの誰かのマシンから
+$ cd /path/to/existing/initial/repo.git
+$ git push git+ssh://git.my-host.example.com/git/newrepo.git main

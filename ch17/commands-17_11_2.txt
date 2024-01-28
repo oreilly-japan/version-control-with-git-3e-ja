@@ -1,0 +1,122 @@
+## ======================================================================
+# svnリポジトリをチェックアウトする
+$ mkdir -p migrations/svn-repo
+$ cd migrations/svn-repo
+$ svn checkout https://svn.code.sf.net/p/svnbook/source/trunk/
+A    trunk/en
+A    trunk/en/book
+A    trunk/en/book/sample-repositories
+...
+...
+
+# オーサー情報を入手する
+# “trunk”ディレクトリで次のコマンドラインを実行する
+$ cd trunk
+$ svn log --xml --quiet | grep author | sort -u | perl -pe 's/.*>(.*?)<.*/$1 = /' > authors.txt
+
+# 以下の形式に合わせてauthors.txtファイルを編集する
+# 正しいオーサー名とメールアドレスに書き換えること
+
+$ cat authors.txt
+FLamY = FLamY <FLamY@email.com>
+Imaged = Imaged <Imaged@email.com>
+
+# クローンするリビジョン数を制限する
+$ cd ../../
+$ mv svn-repo/trunk/authors.txt .
+$ git svn clone -r1:100 https://svn.code.sf.net/p/svnbook/source/trunk/ --authors-file=authors.txt
+...
+...
+
+$ cd trunk
+$ pwd
+/tmp/migrations/trunk
+
+$ git log -2
+commit c0e1e3844c8e54d1d5887b0c0adc9b761de7fd8e (HEAD -> master, git-svn)
+Author: fitz <fitz@email.com>
+Date:   Fri Nov 29 15:27:48 2002 +0000
+
+    * ch03.xml:  port broken-book changes to trunk.
+
+    git-svn-id: https://svn.code.sf.net/p/svnbook/source/trunk@100
+      b70f5e92-ccc6-4167-9ab2-d027528d294b
+
+commit 82f925a9b5a165c4abbcbe4381b4e6fb50950f3a
+Author: cmpilato <cmpilato@email.com>
+Date:   Wed Nov 27 18:31:51 2002 +0000
+
+    * doc/book/book/ch05.xml
+      Little spelling and grammar fixes and such.  Thanks to my beautiful
+      wife Amy for trudging through a full reading of this chapter to
+      help me find these things.  Sweetie, you wanna be a repository
+      administrator now?
+
+    git-svn-id: https://svn.code.sf.net/p/svnbook/source/trunk@99
+      b70f5e92-ccc6-4167-9ab2-d027528d294b
+
+# /tmp/migrations/trunkで実行
+$ echo "This repo was converted from SVN" > README.md
+
+# 新しい変更をステージングし、リポジトリにコミットする
+$ git add README.md
+$ git commit -m "Add README.md in project root"
+[master cee31bf] Add README.md in project root
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+
+# GitHubにプレースホルダーリポジトリを作る
+
+# /tmp/migrations/trunkで実行
+# 新しいリモートoriginを追加する
+$ git remote add origin https://github.com/ppremk/svnbook.git
+
+$ git branch -M master main
+$ git push -u origin main
+Enumerating objects: 561, done.
+Counting objects: 100% (561/561), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (510/510), done.
+Writing objects: 100% (561/561), 871.80 KiB | 7.45 MiB/s, done.
+Total 561 (delta 255), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (255/255), done.
+To https://github.com/ppremk/svnbook.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+
+# 準備処理後の既存ソースプロジェクト
+
+$ pwd
+/tmp/migrations/svn-repo/trunk
+
+$ git init -b main
+Initialized empty Git repository in /tmp/migrations/svn-repo/trunk/.git/
+
+$ git status
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+    .svn/
+    en/
+    tools/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+$ git add .
+warning: CRLF will be replaced by LF in .svn/pristine/6d/6dab3fba2...
+The file will have its original line endings in your working directory
+warning: CRLF will be replaced by LF in en/book/sample-repositories/ch04-sample-repos.dump.
+The file will have its original line endings in your working directory
+
+$ git commit -m "Initial commit"
+[main (root-commit) 7c09122] Initial commit
+ 182 files changed, 1573706 insertions(+)
+ create mode 100644 .svn/entries
+ create mode 100644 .svn/format
+ ...
+ ...
+
+# 新しいリモートを追加し、上流にプッシュすれば移植完了

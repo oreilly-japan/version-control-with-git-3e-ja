@@ -1,0 +1,44 @@
+## ======================================================================
+$ git fetch
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), 660 bytes | 220.00 KiB/s, done.
+From https://github.com/ppremk/somerepo
+   78625f3..cf1abb0  main       -> origin/main
+
+$ git status
+On branch main
+Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+
+$ git log main..origin/main
+commit cf1abb04818c5ee5304c3cdece481442596e34da (origin/main, origin/HEAD)
+Author: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Date:   Thu Jul 14 20:40:17 2022 +0200
+
+Update README.md
+
+# git statusを実行する前にローカルブランチにコミットを1つ追加しておく
+$ git commit -m "Something" README.md
+[main 7d28dc3] Something
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+# なお、約10分の間にリモートにもコミットが1つ追加されている
+$ git status
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 1 and 1 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+
+nothing to commit, working tree clean
+
+$ git log origin/main...main
+commit 7d28dc31ca6be516a648e434fcfc04a4b14dc1b0 (HEAD -> main)
+Author: Prem Kumar Ponuthorai <ppremk@gmail.com>
+Date:   Thu Jul 14 20:50:01 2022 +0200
+
+Something

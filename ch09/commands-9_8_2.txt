@@ -1,0 +1,68 @@
+## ======================================================================
+# devブランチをmainブランチの先頭にリベースしたい
+$ git rebase main dev
+Successfully rebased and updated refs/heads/dev.
+
+# このコマンドの出力の右側のX、Y、Z等はコミットメッセージであり、
+# 同じコミットを指しているものではないことに注意
+$ git show-branch
+* [dev] Z
+ ! [dev2] Q
+  ! [main] D
+---
+*   [dev] Z
+*   [dev^] Y
+*   [dev~2] X
+* + [main] D
+* + [main^] C
+ +  [dev2] Q
+ +  [dev2^] P
+ +  [dev2~2] Y
+ +  [dev2~3] X
+*++ [main~2] B
+
+$ git rebase dev^ dev2
+Successfully rebased and updated refs/heads/dev2.
+
+$ git show-branch
+! [dev] Z
+ * [dev2] Q
+  ! [main] D
+---
+ *  [dev2] Q
+ *  [dev2^] P
++   [dev] Z
++*  [dev2~2] Y
++*  [dev2~3] X
++*+ [main] D
+
+$ git rebase main dev
+Successfully rebased and updated refs/heads/dev.
+
+$ git show-branch
+* [dev] N
+ ! [main] D
+--
+*  [dev] N
+*  [dev^] P
+*  [dev~2] Z
+*  [dev~3] Y
+*  [dev~4] X
+*+ [main] D
+
+$ git rebase --rebase-merges main dev
+Successfully rebased and updated refs/heads/dev.
+
+$ git log --oneline --all --graph
+* 061f9fd... N
+*   f669404... Merge branch 'dev2' into dev
+|\
+| * c386cfc... Z
+* | 38ab25e... P
+|/
+* b93ad42... Y
+* 65be7f1... X
+* e3b9e22... D
+* f2b96c4... C
+* 8619681... B
+* d6fba18... A

@@ -1,0 +1,35 @@
+## ======================================================================
+$ git clone https://github.com/git/git.git
+Cloning into 'git'...
+remote: Counting objects: 126850, done.
+remote: Compressing objects: 100% (41033/41033), done.
+remote: Total 126850 (delta 93115), reused 117003 (delta 84141)
+Receiving objects: 100% (126850/126850), 27.56 MiB | 1.03 MiB/s, done.
+Resolving deltas: 100% (93115/93115), done.
+
+# 私たちの例では、git branch -M master mainコマンドでデフォルトブランチ名をmainに変えてある
+$ git rev-list main -- date.c
+ccd12a3d6cc62f51b746654ae56e26d92f89ba92
+0807e57807aaffe2813fffb7704dcc9153f03832
+...
+89967023da94c0d874713284869e1924797d30bb
+ecee9d9e793c7573cf3730fb9746527a0a7e94e7
+
+$ git show --stat ecee9d9 --pretty=short
+commit ecee9d9e793c7573cf3730fb9746527a0a7e94e7
+Author: Edgar Toernig <froese@gmx.de>
+
+    [PATCH] Do date parsing by hand...
+
+ Makefile      |    4 +-
+ cache.h       |    3 +
+ commit-tree.c |   27 +--------
+ date.c        |  184 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 191 insertions(+), 27 deletions(-)
+
+$ git checkout ecee9d9 date.c
+Updated 1 path from 0cd8a2506a
+
+$ git show ecee9d9:date.c > date.c-oldest
+
+$ git cat-file -p 89967023:date.c > date.c-first-change

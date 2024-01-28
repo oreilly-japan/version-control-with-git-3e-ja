@@ -1,0 +1,66 @@
+## ======================================================================
+$ git pull
+# ... マージコンフリクトのためにプルに失敗 ...
+
+$ git stash
+Saved working directory and index state WIP on main: e4896bd ...
+
+$ git pull
+$ git stash pop
+Already up to date.
+On branch main
+...
+...
+Dropped refs/stash@{0} (39351f8d3bd89116df89a67119831638d6268180)
+
+# ... 編集、コミット ...
+# ... 最後のコミット後の編集 ...
+
+$ git commit --dry-run
+# On branch main
+# Your branch is ahead of 'origin/main' by 2 commits.
+#
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git restore -- <file>..." to discard changes in working directory)
+#
+#       modified:   file1.h
+#       modified:   file1.c
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git pull --rebase
+error: cannot pull with rebase: You have unstaged changes.
+error: please commit or stash them.
+
+$ git stash
+Saved working directory and index state WIP on main: 5955d14 Some commit log.
+
+$ git pull --rebase
+remote: Counting objects: 63, done.
+remote: Compressing objects: 100% (43/43), done.
+remote: Total 43 (delta 36), reused 0 (delta 0)
+Unpacking objects: 100% (43/43), done.
+From ssh://git/var/git/my_repo
+   871746b..6687d58  main     -> origin/main
+Successfully rebased and updated refs/heads/main.
+
+# お望みとあればすぐに上流にプッシュしてよい
+$ git push
+
+$ git stash pop
+Auto-merging file1.h
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+
+Changed but not updated:
+   (use "git add <file>..." to update what will be committed)
+   (use "git restore -- <file>..." to discard changes in working directory)
+
+       modified:   file1.h
+       modified:   file1.c
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (7e2546f5808a95a2e6934fcffb5548651badf00d)
+
+$ git push

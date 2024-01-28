@@ -1,0 +1,62 @@
+## ======================================================================
+# 既存のリポジトリをクローンする
+$ git clone https://github.com/ppremk/analyze-this.git
+Cloning into 'analyze-this'...
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 22 (delta 7), reused 22 (delta 7), pack-reused 0
+Receiving objects: 100% (22/22), 36.25 KiB | 331.00 KiB/s, done.
+Resolving deltas: 100% (7/7), done.
+
+# ファイルを確認する
+$ cd analyze-this
+$ ls -l
+total 7896
+-rw-r--r--  1 ppremk  stax        24 Apr 28 00:47 README-v0.md
+-rw-r--r--  1 ppremk  stax        20 Apr 28 00:47 README.md
+-rw-r--r--  1 ppremk  stax  25000000 Apr 28 00:47 bigfile1.exe
+-rw-r--r--  1 ppremk  stax  30000000 Apr 28 00:47 bigfile2.exe
+-rw-r--r--  1 ppremk  stax  35000000 Apr 28 00:47 bigfile3.exe
+-rw-r--r--  1 ppremk  stax   1000000 Apr 28 00:47 file4.md
+-rw-r--r--  1 ppremk  stax   1000000 Apr 28 00:47 file5.md
+-rw-r--r--  1 ppremk  stax   2000000 Apr 28 00:47 file6.md
+drwxr-xr-x  4 ppremk  stax       128 Apr 28 00:47 logs
+drwxr-xr-x  3 ppremk  stax        96 Apr 28 00:47 scripts
+drwxr-xr-x  4 ppremk  stax       128 Apr 28 00:47 toolkit
+
+$ git log --oneline
+e2a20a2 (HEAD -> main, origin/main, origin/HEAD) add folders
+19263cb add remaining files
+9ea727a add bigfiles
+1d07224 add udated readme
+cd654e0 intial commit
+
+# クローンしたローカルリポジトリの巨大ファイルをチェックする
+$ git lfs migrate info --everything
+migrate: Sorting commits: ..., done.
+migrate: Examining commits: 100% (5/5), done.
+*.exe       90 MB   3/3 files(s)    100%
+*.md        4.0 MB  5/5 files(s)    100%
+*.config    14 B    1/1 files(s)    100%
+
+LFS Objects 0 B     0/4 files(s)      0%
+
+# .exeファイルはGit LFSを使うようにするファイルタイプの候補として適切だ
+$ git lfs migrate import --everything --include="*.exe"
+migrate: Sorting commits: ..., done.
+migrate: Rewriting commits: 100% (5/5), done.
+  main  e2a20a2db7916f1efc5430a9a15bc5c0a8c41860 -> 7e08e949e76653c8f008a65aa42cea9d48b8b473
+migrate: Updating refs: ..., done.
+migrate: checkout: ..., done.
+
+# 新しいコミット履歴をチェックする
+$ git log --oneline
+7e08e94 (HEAD -> main) add folders
+293ff49 add remaining files
+9fab33c add bigfiles
+bdd78fa add udated readme
+b682340 intial commit
+
+# LFS対応にコンバートしたリポジトリは既存リモートに強制プッシュするか
+# 新リモートにプッシュする

@@ -1,0 +1,42 @@
+## ======================================================================
+$ cd /tmp
+$ mkdir hooktest && cd hooktest
+$ git init -b main
+Initialized empty Git repository in /tmp/hooktest/.git/
+
+$ touch a b c
+
+$ git add a b c
+
+$ git commit -m 'Added a, b, c'
+[main (root-commit) 10f32fe] Added a, b, c
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 a
+ create mode 100644 b
+ create mode 100644 c
+
+# フックを作る
+$ touch .git/hooks/pre-commit
+
+# 実行可能ビットをセットする
+$ chmod a+x .git/hooks/pre-commit
+
+$ echo "perfectly fine" > a
+
+$ echo "broken" > b
+
+# 'broken'なものを含むすべてのファイルのコミットを試行
+$ git commit -m "test commit -a" -a
+Hello, I'm a pre-commit script!
+ERROR: Can't commit the word 'broken'
+
+# 'broken'を含まないファイルだけをコミット
+$ git commit -m "test only file a" a
+Hello, I'm a pre-commit script!
+[main 5468656] test only file a
+ 1 file changed, 1 insertion(+)
+
+# 'broken'を含むファイルはコミットできない
+$ git commit -m "test only file b" b
+Hello, I'm a pre-commit script!
+ERROR: Can't commit the word 'broken'

@@ -1,0 +1,45 @@
+## ======================================================================
+$ git checkout -b new-branch
+
+## ======================================================================
+$ git branch
+  bugs/pr-1
+  bugs/pr-2
+  dev
+* main
+
+$ git checkout -b bugs/pr-3
+M       NewStuff
+Switched to a new branch "bugs/pr-3"
+
+$ git show-branch
+! [bugs/pr-1] Fix Problem Report 1
+ ! [bugs/pr-2] Added Bob's fixes.
+  * [bugs/pr-3] Added Bob's fixes.
+   ! [dev] Started developing NewStuff
+    ! [main] Added Bob's fixes.
+-----
+   +  [dev] Started developing NewStuff
+   +  [dev^] Improve the new development
+   +  [dev~2] Start some new development.
++     [bugs/pr-1] Fix Problem Report 1
+++*++ [bugs/pr-2] Added Bob's fixes.
+
+## ======================================================================
+$ git checkout -b new-branch start-point
+
+$ git branch new-branch start-point
+$ git checkout new-branch
+
+## ======================================================================
+$ git checkout -b shiny-branch-name
+fatal: A branch named 'shiny-branch-name' already exists.
+
+$ git checkout -B shiny-branch-name
+Switched to and reset branch shiny-branch-name
+
+# 次の2つのコマンドを続けて実行するのと同じ
+# -fオプションは、作業ディレクトリに含まれるローカルな変更を破棄する
+
+$ git branch -f branch [start-point]
+$ git checkout branch

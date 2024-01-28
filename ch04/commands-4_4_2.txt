@@ -1,0 +1,33 @@
+## ======================================================================
+$ git log 89d21f4b649..0a02ce72d9 --oneline --graph
+* 0a02ce72d9 Clean up the Makefile a bit.
+* 839a7a06f3 Add the simple scripts I used to do a merge with content conflicts.
+*   b51ad43140 Merge the new object model thing from Daniel Barkalow
+|\
+| * b5039db6d2 [PATCH] Switch implementations of merge-base, port to parsing
+| * ff5ebe39b0 [PATCH] Port fsck-cache to use parsing functions
+| * 5873b67eef [PATCH] Port rev-tree to parsing functions
+| * 175785e5ff [PATCH] Implementations of parsing functions
+| * 6eb8ae00d4 [PATCH] Header files for object parsing
+* | a4b7dbef4e [PATCH] fix bug in read-cache.c which loses files when merging...
+* | 1bc992acac [PATCH] Fix confusing behaviour of update-cache --refresh on...
+* | 6ad6d3d36c Update README to reflect the hierarchical tree objects...
+* | 64982f7510 [PATCH] (resend) show-diff.c off-by-one fix
+* | 75118b13bc Pass a "merge-cache" helper program to execute a merge on...
+* | 74b2428f55 [PATCH] fork optional branch point normazilation
+* | d9f98eebcd Ignore any unmerged entries for "checkout-cache -a".
+* | 5e5128ed1c Remove extraneous ',' ';' and '.' characters from...
+* | 08ca0b04ba Make the revision tracking track the object types too.
+* | d0d7cbe730 Make "commit-tree" check the input objects more carefully.
+* | 7d60ad7cc9 Make "parse_commit" return the "struct revision" for the commit.
+|/
+* 6683463ed6 Do a very simple "merge-base" that finds the most recent...
+* 15000d7899 Make "rev-tree.c" use the new-and-improved "mark_reachable()"
+* 01796b0e91 Make "revision.h" slightly better to use.
+
+## ======================================================================
+$ mkdir commit-graph-repo
+# 新ファイルを追加し、新ブランチを作り、ブランチをマージする処理
+...
+...
+$ gitk

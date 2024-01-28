@@ -1,0 +1,61 @@
+## ======================================================================
+$ cd ~/my_website
+$ git diff
+diff --git a/index.html b/index.html
+index 40b00ff..063ac92 100644
+--- a/index.html
++++ b/index.html
+@@ -1,5 +1,7 @@
+ <html>
+ <body>
+ My web site is awesome!
++<br/>
++Read a <a href="fuzzy.txt">new</a> poem!
+ </body>
+ <html>
+
+$ git commit -m "Add a new poem link." index.html
+[main 89cfd9f] Add a new poem link.
+ 1 file changed, 2 insertions(+)
+
+$ git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 333 bytes | 333.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+To /tmp/Depot/my_website.git
+   e023cd1..c4e45f7  main -> main
+
+$ cd /tmp/lisa/my_website
+$ git pull
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), 943 bytes | 235.00 KiB/s, done.
+From /tmp/Depot/my_website
+   a5f8133..c4e45f7  main     -> origin/main
+Updating a5f8133..c4e45f7
+Fast-forward
+ index.html |   2 ++
+ 1 file changed, 2 insertions(+)
+
+## ======================================================================
+# 除外refspecによる参照
+
+$ git fetch origin "refs/heads/*:refs/remotes/origin/*" ^refs/heads/skip-me
+...
+...
+
+## ======================================================================
+# 完全指定のrefs/remotes/origin/mainでもよい
+
+$ git merge origin/main
+Updating a5f8133..c4e45f7
+Fast forward
+ index.html |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+## ======================================================================

@@ -1,0 +1,239 @@
+## ======================================================================
+$ git clone https://github.com/ppremk/analyze-this.git
+Cloning into 'analyze-this'...
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 22 (delta 7), reused 22 (delta 7), pack-reused 0
+Receiving objects: 100% (22/22), 36.25 KiB | 337.00 KiB/s, done.
+Resolving deltas: 100% (7/7), done.
+
+$ cd analyze-this
+
+## ======================================================================
+$ [PACKAGE_MANAGER] install git-filter-repo
+
+## ======================================================================
+$ git filter-repo --analyze
+Processed 9 blob sizes
+Processed 5 commits
+Writing reports to .git/filter-repo/analysis...done.
+
+$ tree .git/filter-repo/analysis
+.git/filter-repo/analysis
+├── README
+├── blob-shas-and-paths.txt
+├── directories-all-sizes.txt
+├── directories-deleted-sizes.txt
+├── extensions-all-sizes.txt
+├── extensions-deleted-sizes.txt
+├── path-all-sizes.txt
+├── path-deleted-sizes.txt
+└── renames.txt
+
+$ cat .git/filter-repo/analysis/blob-shas-and-paths.txt
+=== Files by sha and associated pathnames in reverse size ===
+Format: sha, unpacked size, packed size, filename(s) object stored as
+  04b334ff842a8ce96abd1d16b7904eacb649839f   35000000      34042 bigfile3.exe
+  6f2bb1c9e846f0546416e8ec33bc007f353aeeff   30000000        797 bigfile2.exe
+  d38148a863256f6af5aee0edb6020c4e87c2c24b   25000000        667 bigfile1.exe
+  31204afb3d72e8c0f95fde7add90e3893421f422    2000000         77 file6.md
+  7c2624a6b9687e88178638cd95b609c329177ade    1000000         50 [file4.md, file5.md]
+  08869d950c7543382974f936596e462c1dcc0eaa         24         34 README-v0.md
+  861761f28976d55103acf61e8423cd32779d7174         20         30 README.md
+  99cf872931885fa266f3dc4d998092f087dc120a         14         23 scripts/env.config
+  e69de29bb2d1d6434b8b29ae775ad8c2e48c5391          0          9 [logs/client.log, logs/server....
+
+## ======================================================================
+$ git log --oneline
+* e2a20a2 (HEAD -> main, origin/main, origin/HEAD) add folders
+* 19263cb add remaining files
+* 9ea727a add bigfiles
+* 1d07224 add udated readme
+* cd654e0 intial commit
+
+$ ls -al
+total 7896
+drwxr-xr-x  14 ppremk  stax       448 Mar 19 22:10 .
+drwxr-xr-x   5 ppremk  stax       160 Mar 19 22:10 ..
+drwxr-xr-x  13 ppremk  stax       416 Mar 19 22:19 .git
+-rw-r--r--   1 ppremk  stax        24 Mar 19 22:10 README-v0.md
+-rw-r--r--   1 ppremk  stax        20 Mar 19 22:10 README.md
+-rw-r--r--   1 ppremk  stax  25000000 Mar 19 22:10 bigfile1.exe
+-rw-r--r--   1 ppremk  stax  30000000 Mar 19 22:10 bigfile2.exe
+-rw-r--r--   1 ppremk  stax  35000000 Mar 19 22:10 bigfile3.exe
+-rw-r--r--   1 ppremk  stax   1000000 Mar 19 22:10 file4.md
+-rw-r--r--   1 ppremk  stax   1000000 Mar 19 22:10 file5.md
+-rw-r--r--   1 ppremk  stax   2000000 Mar 19 22:10 file6.md
+drwxr-xr-x   4 ppremk  stax       128 Mar 19 22:10 logs
+drwxr-xr-x   3 ppremk  stax        96 Mar 19 22:10 scripts
+drwxr-xr-x   4 ppremk  stax       128 Mar 19 22:10 toolkit
+
+$ git filter-repo --path README-v0.md --invert-paths
+Parsed 5 commits
+New history written in 0.20 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+HEAD is now at afd2aa7 add folders
+Enumerating objects: 19, done.
+Counting objects: 100% (19/19), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (19/19), done.
+Total 19 (delta 6), reused 11 (delta 4), pack-reused 0
+
+New history written in 5.36 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+Completely finished after 0.40 seconds.
+
+# ファイル削除後の新しいコミット履歴を確認する
+
+$ git log --oneline
+* afd2aa7 (HEAD -> main) add folders
+* bb4ce63 add remaining files
+* 2f3721a add bigfiles
+* 3f9bd4a add udated readme
+
+$ git filter-repo --path logs/ --invert-paths
+Parsed 4 commits
+New history written in 0.08 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+HEAD is now at ceacc4b add folders
+Enumerating objects: 18, done.
+Counting objects: 100% (18/18), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (18/18), done.
+Total 18 (delta 6), reused 14 (delta 4), pack-reused 0
+Completely finished after 0.31 seconds.
+
+# ディレクトリ削除後の新しいコミット履歴を確認する
+
+$ git log --oneline
+* ceacc4b (HEAD -> main) add folders
+* bb4ce63 add remaining files
+* 2f3721a add bigfiles
+* 3f9bd4a add udated readme
+
+$ git filter-repo --path-rename scripts:configs --path-rename toolkit:scripts
+Parsed 4 commits
+New history written in 0.08 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+HEAD is now at ba656b4 add folders
+Enumerating objects: 18, done.
+Counting objects: 100% (18/18), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (18/18), done.
+Total 18 (delta 6), reused 14 (delta 4), pack-reused 0
+Completely finished after 0.27 seconds.
+
+# ディレクトリ名変更後の新しいコミット履歴を確認する
+
+$ git log --oneline
+* ba656b4 (HEAD -> main) add folders
+* bb4ce63 add remaining files
+* 2f3721a add bigfiles
+* 3f9bd4a add udated readme
+
+$ ls -l
+total 7888
+-rw-r--r--  1 ppremk  stax    20B Mar 19 22:10 README.md
+-rw-r--r--  1 ppremk  stax    24M Mar 19 22:10 bigfile1.exe
+-rw-r--r--  1 ppremk  stax    29M Mar 19 22:10 bigfile2.exe
+-rw-r--r--  1 ppremk  stax    33M Mar 19 22:10 bigfile3.exe
+drwxr-xr-x  3 ppremk  stax    96B Mar 19 22:30 configs
+-rw-r--r--  1 ppremk  stax   977K Mar 19 22:10 file4.md
+-rw-r--r--  1 ppremk  stax   977K Mar 19 22:10 file5.md
+-rw-r--r--  1 ppremk  stax   1.9M Mar 19 22:10 file6.md
+drwxr-xr-x  4 ppremk  stax   128B Mar 19 22:30 scripts
+
+# 5MBよりも大きいファイルを削除する
+
+$ git filter-repo --strip-blobs-bigger-than 5M
+Processed 8 blob sizes
+Parsed 4 commits
+New history written in 0.10 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+HEAD is now at eea637d add folders
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (13/13), done.
+Total 13 (delta 2), reused 8 (delta 1), pack-reused 0
+Completely finished after 0.37 seconds.
+
+# 巨大ファイル削除後の新しいコミット履歴を確認する
+
+$ git log --oneline
+* eea637d (HEAD -> main) add folders
+* 21e1028 add remaining files
+* 3f9bd4a add udated readme
+
+# 巨大ファイルが削除されたことを確認する
+
+$ ls -l
+total 7840
+-rw-r--r--  1 ppremk  stax    20B Mar 19 22:10 README.md
+drwxr-xr-x  3 ppremk  stax    96B Mar 19 22:30 configs
+-rw-r--r--  1 ppremk  stax   977K Mar 19 22:10 file4.md
+-rw-r--r--  1 ppremk  stax   977K Mar 19 22:10 file5.md
+-rw-r--r--  1 ppremk  stax   1.9M Mar 19 22:10 file6.md
+drwxr-xr-x  4 ppremk  stax   128B Mar 19 22:30 scripts
+
+## ======================================================================
+# 削除したい機密データを格納する文字列表現ファイルファイルを作る
+$ echo "S0m3T0k3n" > sensitive-data.txt
+
+$ git filter-repo --replace-text sensitive-data.txt
+Parsed 3 commits
+New history written in 0.10 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+HEAD is now at 7a67e7e add folders
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (13/13), done.
+Total 13 (delta 2), reused 8 (delta 1), pack-reused 0
+Completely finished after 0.30 seconds.
+
+$ git log --oneline
+* 7a67e7e (HEAD -> main) add folders
+* 21e1028 add remaining files
+* 3f9bd4a add udated readme
+
+$ cat configs/env.config
+PAT=***REMOVED***
+
+## ======================================================================
+$ git log --oneline
+* 7a67e7e (HEAD -> main) add folders
+* 21e1028 add remaining files
+* 3f9bd4a add udated readme
+
+# 修正したいコミットメッセージと修正後のコミットメッセージを格納する文字列表現
+# ファイルを作る。
+# 上のTIPで示したように、修正前後の文字列を==>で区切っていることに注意。
+
+$ echo "add udated readme==>add latest readme" > fix-commit-msgs.txt
+
+$ git filter-repo --replace-message fix-commit-msgs.txt
+Parsed 3 commits
+New history written in 0.08 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+HEAD is now at fbf574b add folders
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (13/13), done.
+Total 13 (delta 2), reused 10 (delta 2), pack-reused 0
+Completely finished after 0.28 seconds.
+
+$ git log --oneline
+* fbf574b (HEAD -> main) add folders
+* c13ca61 add remaining files
+* 06f04cd add latest readme
+
+$ git filter-repo -h

@@ -1,0 +1,27 @@
+## ======================================================================
+$ cd ~/my_website
+
+$ git checkout -b foo
+Switched to a new branch "foo"
+
+$ git push origin foo
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To /tmp/Depot/my_website
+ * [new branch]      foo -> foo
+
+$ git push upstream new_dev
+$ git push upstream new_dev:new_dev
+$ git push upstream new_dev:refs/heads/new_dev
+
+$ git push origin :foo
+To /tmp/Depot/my_website
+ - [deleted]         foo
+
+$ git push origin --delete foo
+
+# 既存のoldコミットまでで新しい名前を作る
+$ git branch new origin/old
+$ git push origin new
+
+# 古い名前を削除する
+$ git push origin :old

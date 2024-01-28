@@ -1,0 +1,4 @@
+## ======================================================================
+$ git pull -s ours gitweb.git main
+
+$ git pull -s subtree gitweb.git main

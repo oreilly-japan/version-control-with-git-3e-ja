@@ -1,0 +1,303 @@
+## ======================================================================
+$ git reflog show
+a44d980 HEAD@{0}: reset: moving to main
+79e881c HEAD@{1}: commit: last foo change
+a44d980 HEAD@{2}: checkout: moving from main to fred
+a44d980 HEAD@{3}: rebase -i (finish): returning to refs/heads/main
+a44d980 HEAD@{4}: rebase -i (pick): Tinker bar
+a777d4f HEAD@{5}: rebase -i (pick): Modify bar
+e3c46b8 HEAD@{6}: rebase -i (squash): More foo and bar with additional stuff.
+8a04ca4 HEAD@{7}: rebase -i (squash): updating HEAD
+1a4be28 HEAD@{8}: checkout: moving from main to 1a4be28
+ed6e906 HEAD@{9}: commit: Tinker bar
+6195b3d HEAD@{10}: commit: Squash into 'more foo and bar'
+488b893 HEAD@{11}: commit: Modify bar
+1a4be28 HEAD@{12}: commit: More foo and bar
+8a04ca4 HEAD@{13}: commit (initial): Initial foo and bar.
+
+$ git reflog fred
+a44d980 fred@{0}: reset: moving to main
+79e881c fred@{1}: commit: last foo change
+a44d980 fred@{2}: branch: Created from HEAD
+
+$ git show HEAD@{10}
+commit 6195b3dfd30e464ffb9238d89e3d15f2c1dc35b0
+Author: Jon Loeliger <jdl@example.com>
+Date:   Sat Oct 29 09:57:05 2011 -0500
+
+    Squash into 'more foo and bar'
+
+diff --git a/foo b/foo
+index 740fd05..a941931 100644
+--- a/foo
++++ b/foo
+@@ -1,2 +1 @@
+-Foo!
+-more foo
++junk
+
+$ git log 'HEAD@{yesterday}'
+commit 1a4be2804f7382b2dd399891eef097eb10ddc1eb
+Author: Jon Loeliger <jdl@example.com>
+Date:   Sat Oct 29 09:55:52 2011 -0500
+
+More foo and bar
+
+commit 8a04ca4207e1cb74dd3a3e261d6be72e118ace9e
+Author: Jon Loeliger <jdl@example.com>
+Date:   Sat Oct 29 09:55:07 2011 -0500
+
+Initial foo and bar.
+
+$ git log HEAD@{last-monday}
+warning: Log for 'HEAD' only goes back to Sat, 29 Oct 2011 09:55:07 -0500.
+commit 8a04ca4207e1cb74dd3a3e261d6be72e118ace9e
+Author: Jon Loeliger <jdl@example.com>
+Date:   Sat Oct 29 09:55:07 2011 -0500
+
+Initial foo and bar.
+
+# まずい
+$ git log dev@{2 days ago}
+
+# おそらく大丈夫
+$ git log 'dev@{2 days ago}'
+
+# 以下の3種類はどれも同じ意味
+$ git log 'dev@{2 days ago}'
+$ git log dev@{2.days.ago}
+$ git log dev@{2-days-ago}
+
+## ======================================================================
+# リポジトリを作成
+$ mkdir /tmp/recover-reset-hard
+$ cd /tmp/recover-reset-hard
+$ git init -b main
+Initialized empty Git repository in /tmp/recover-reset-hard/.git/
+
+# ファイルを5つ追加する
+$ echo "First file" > file1
+$ git add file1
+$ git commit -m "Add first file"
+[main (root-commit) c024088] Add first file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file1
+$ echo "Second file" > file2
+$ git add file2
+$ git commit -m "Add second file"
+[main 2294017] Add second file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file2
+$ echo "Third file" > file3
+$ git add file3
+$ git commit -m "Add third file"
+[main 5c25c9f] Add third file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file3
+$ echo "Fourth file" > file4
+$ git add file4
+$ git commit -m "Add fourth file"
+[main 8189a19] Add fourth file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file4
+$ echo "Fifth file" > file5
+$ git add file5
+$ git commit -m "Add fifth file"
+[main b0f465f] Add fifth file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file5
+$ ls
+file1  file2  file3  file4  file5
+$ git log --oneline
+b0f465f (HEAD -> main) Add fifth file
+8189a19 Add fourth file
+5c25c9f Add third file
+2294017 Add second file
+c024088 Add first file
+
+# 誤ってfile2を追加したコミットにgit reset --hardしてしまった。
+# あなたの環境ではコミットIDが異なっているはずなので適宜読み替えて実行してほしい。
+$ git reset --hard 2294017
+HEAD is now at 2294017 Add second file
+$ ls
+file1  file2
+$ git log --oneline
+2294017 (HEAD -> main) Add second file
+c024088 Add first file
+
+# git reset --hardを実行する直前のコミットの状態に戻す。
+# HEAD@{1}の代わりにORIG_HEADを指定してもよい。
+$ git reflog show
+2294017 (HEAD -> main) HEAD@{0}: reset: moving to 2294017
+b0f465f HEAD@{1}: commit: Add fifth file
+8189a19 HEAD@{2}: commit: Add fourth file
+5c25c9f HEAD@{3}: commit: Add third file
+2294017 (HEAD -> main) HEAD@{4}: commit: Add second file
+c024088 HEAD@{5}: commit (initial): Add first file
+$ git reset --hard HEAD@{1}
+HEAD is now at b0f465f Add fifth file
+
+# 直前のコミットの状態に戻った
+$ ls
+file1  file2  file3  file4  file5
+$ git log --oneline
+b0f465f (HEAD -> main) Add fifth file
+8189a19 Add fourth file
+5c25c9f Add third file
+2294017 Add second file
+c024088 Add first file
+
+# 復元の操作が参照ログに追加されている
+$ git reflog show
+b0f465f (HEAD -> main) HEAD@{0}: reset: moving to HEAD@{1}
+2294017 HEAD@{1}: reset: moving to 2294017
+b0f465f (HEAD -> main) HEAD@{2}: commit: Add fifth file
+8189a19 HEAD@{3}: commit: Add fourth file
+5c25c9f HEAD@{4}: commit: Add third file
+2294017 HEAD@{5}: commit: Add second file
+c024088 HEAD@{6}: commit (initial): Add first file
+
+## ======================================================================
+# リポジトリを作成
+$ mkdir /tmp/recover-branch-removal
+$ cd /tmp/recover-branch-removal
+$ git init -b main
+Initialized empty Git repository in /tmp/recover-branch-removal/.git/
+
+# mainブランチにファイルを3つ追加する
+$ echo "First file" > file1
+$ git add file1
+$ git commit -m "Add first file"
+[main (root-commit) 7fb4fd6] Add first file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file1
+$ echo "Second file" > file2
+$ git add file2
+$ git commit -m "Add second file"
+[main ed6d7b5] Add second file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file2
+$ echo "Third file" > file3
+$ git add file3
+$ git commit -m "Add third file"
+[main 51ca17d] Add third file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file3
+$ ls
+file1  file2  file3
+$ git log --oneline
+51ca17d (HEAD -> main) Add third file
+ed6d7b5 Add second file
+7fb4fd6 Add first file
+
+# file2を追加したコミットから分岐してnew_featureブランチを作成する。
+# あなたの環境ではコミットIDが異なっているはずなので適宜読み替えて実行してほしい。
+$ git branch new_feature ed6d7b5
+$ git show-branch
+* [main] Add third file
+ ! [new_feature] Add second file
+--
+*  [main] Add third file
+*+ [new_feature] Add second file
+$ git switch new_feature
+Switched to branch 'new_feature'
+$ ls
+file1  file2
+$ git log --oneline
+ed6d7b5 (HEAD -> new_feature) Add second file
+7fb4fd6 Add first file
+
+# new_featureブランチにファイルを2つ追加する
+$ echo "First branch file" > branch-file1
+$ git add branch-file1
+$ git commit -m "Add first branch file"
+[new_feature 52c0629] Add first branch file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 branch-file1
+$ echo "Second branch file" > branch-file2
+$ git add branch-file2
+$ git commit -m "Add second branch file"
+[new_feature e015cf3] Add second branch file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 branch-file2
+$ ls
+branch-file1  branch-file2  file1  file2
+$ git show-branch
+! [main] Add third file
+ * [new_feature] Add second branch file
+--
+ * [new_feature] Add second branch file
+ * [new_feature^] Add first branch file
++  [main] Add third file
++* [new_feature~2] Add second file
+$ git log --oneline --graph --all
+* e015cf3 (HEAD -> new_feature) Add second branch file
+* 52c0629 Add first branch file
+| * 51ca17d (main) Add third file
+|/
+* ed6d7b5 Add second file
+* 7fb4fd6 Add first file
+
+# 警告を無視してnew_featureブランチをマージせずに削除してしまった
+$ git switch main
+Switched to branch 'main'
+$ git branch -d new_feature
+error: The branch 'new_feature' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D new_feature'.
+$ git branch -D new_feature
+Deleted branch new_feature (was e015cf3).
+$ git log --oneline --graph --all
+* 51ca17d (HEAD -> main) Add third file
+* ed6d7b5 Add second file
+* 7fb4fd6 Add first file
+$ git show-branch
+[main] Add third file
+
+# new_featureブランチへの最後のコミットを指定してnew_featureブランチを再度作成することで削除する前の状態に復元する
+$ git reflog show
+51ca17d (HEAD -> main) HEAD@{0}: checkout: moving from new_feature to main
+e015cf3 HEAD@{1}: commit: Add second branch file
+52c0629 HEAD@{2}: commit: Add first branch file
+ed6d7b5 HEAD@{3}: checkout: moving from main to new_feature
+51ca17d (HEAD -> main) HEAD@{4}: commit: Add third file
+ed6d7b5 HEAD@{5}: commit: Add second file
+7fb4fd6 HEAD@{6}: commit (initial): Add first file
+$ git branch new_feature HEAD@{1}
+
+# new_featureブランチを削除する前の状態に復元された
+$ git show-branch
+* [main] Add third file
+ ! [new_feature] Add second branch file
+--
+ + [new_feature] Add second branch file
+ + [new_feature^] Add first branch file
+*  [main] Add third file
+*+ [new_feature~2] Add second file
+$ git log --oneline --graph --all
+* e015cf3 (new_feature) Add second branch file
+* 52c0629 Add first branch file
+| * 51ca17d (HEAD -> main) Add third file
+|/
+* ed6d7b5 Add second file
+* 7fb4fd6 Add first file
+$ git switch new_feature
+Switched to branch 'new_feature'
+$ ls
+branch-file1  branch-file2  file1  file2
+
+# ブランチの作成についての参照ログはブランチを指定すると表示される
+$ git reflog show
+e015cf3 (HEAD -> new_feature) HEAD@{0}: checkout: moving from main to new_feature
+51ca17d (main) HEAD@{1}: checkout: moving from new_feature to main
+e015cf3 (HEAD -> new_feature) HEAD@{2}: commit: Add second branch file
+52c0629 HEAD@{3}: commit: Add first branch file
+ed6d7b5 HEAD@{4}: checkout: moving from main to new_feature
+51ca17d (main) HEAD@{5}: commit: Add third file
+ed6d7b5 HEAD@{6}: commit: Add second file
+7fb4fd6 HEAD@{7}: commit (initial): Add first file
+$ git reflog show new_feature
+e015cf3 (HEAD -> new_feature) new_feature@{0}: branch: Created from HEAD@{1}
+
+## ======================================================================
+$ git reflog expire --expire=now --all
+$ git gc
