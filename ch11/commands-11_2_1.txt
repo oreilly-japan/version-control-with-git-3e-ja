@@ -32,7 +32,7 @@ $ cat config
         ignorecase = true
         precomposeunicode = true
 [remote "origin"]
-        url = ~/users/my_website
+        url = ~/my_website
 
 $ git remote remove origin
 $ cat config
