@@ -32,4 +32,4 @@ $ git log --oneline --graph
 * a5b6866 Initial commit
 
 $ cd example-subtree && ls
-LICENSE    README.md    another-new-file.md new-file.md    parkling-file.md
+LICENSE    README.md    another-new-file.md new-file.md    sparkling-file.md

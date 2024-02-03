@@ -47,7 +47,7 @@ $ git log --oneline --graph
 | * e5d123a Initial commit
 * a5b6866 Initial commit
 
-# HEADを最初のコミットに変更する。
+# mainブランチの先頭を最初のコミットに変更する。
 # あなたの環境ではコミットIDが異なっているはずなので適宜読み替えて実行してほしい。
 $ git reset --hard a5b6866
 HEAD is now at a5b6866 Initial commit
