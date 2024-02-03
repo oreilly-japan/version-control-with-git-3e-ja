@@ -2,7 +2,7 @@
 $ git config remote.publish.url 'ssh://git.example.org/pub/repo.git'
 $ git config remote.publish.push '+refs/heads/*:refs/heads/*'
 
-# git.gitソースのクローンより
+# Gitのソースコードリポジトリのクローンより
 $ git config -l
 core.repositoryformatversion=0
 core.filemode=true

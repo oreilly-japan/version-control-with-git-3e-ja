@@ -19,9 +19,9 @@ To /tmp/Depot/my_website
 
 $ git push origin --delete foo
 
-# 既存のoldコミットまでで新しい名前を作る
+# 古い名前のブランチから新しい名前のブランチを作る
 $ git branch new origin/old
 $ git push origin new
 
-# 古い名前を削除する
+# 古い名前のブランチを削除する
 $ git push origin :old
