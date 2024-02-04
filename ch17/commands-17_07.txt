@@ -41,6 +41,7 @@ t/perf/p4221-log-grep-engines-fixed.sh
 t/perf/p7810-grep.sh
 t/perf/p7820-grep-engines.sh
 t/perf/p7821-grep-engines-fixed.sh
+t/perf/p7822-grep-perl-character.sh
 
 # まだ/tmp/gitリポジトリ内にいる
 

@@ -1,6 +1,10 @@
 ## ======================================================================
-# Gitソースリポジトリ
-$ cd ~/Repos/git
+$ git clone -b main https://git.kernel.org/pub/scm/git/git.git
+
+# Gitのソースリポジトリ
+$ cd git
+
+# git cloneを実行した時期によって出力は異なるものになる。
 $ git whatchanged --since="three days ago" --oneline
 745950c p4000: use -3000 when promising -3000
 :100755 100755 d6e505c... 7e00c9d... M  t/perf/p4000-diff-algorithms.sh
@@ -15,11 +19,20 @@ $ git whatchanged --since="three days ago" --oneline
 
 $ git whatchanged ORIG_HEAD..HEAD
 
-$ cd /usr/src/linux
+$ git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+
+# Linuxカーネルのソースリポジトリ
+$ cd linux
 $ git pull
 
+# git cloneとgit pullを実行した時期によって出力は異なるものになる。
 $ git whatchanged ORIG_HEAD..HEAD --oneline Makefile
 fde7d90 Linux 3.3-rc7
 :100644 100644 66d13c9... 56d4817... M  Makefile
 192cfd5 Linux 3.3-rc6
 :100644 100644 b61a963... 66d13c9... M  Makefile
+
+# リポジトリをクローンした直後はORIG_HEADとHEADがどちらも最新
+# のコミットを指していて上記のコマンドは何も出力されないため、
+# ORIG_HEADの代わりに過去のある時点のコミットを指定してみるとよい。
+$ git whatchanged 113a618..HEAD --oneline Makefile
