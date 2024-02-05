@@ -29,7 +29,7 @@ $ git show-branch bugs/pr-1 bugs/pr-2
 +  [bugs/pr-1] Fix Problem Report 1
 ++ [bugs/pr-2] Added Bob's fixes.
 
-$ git show-branch bugs/*
+$ git show-branch 'bugs/*'
 ! [bugs/pr-1] Fix Problem Report 1
  ! [bugs/pr-2] Added Bob's fixes.
 --
