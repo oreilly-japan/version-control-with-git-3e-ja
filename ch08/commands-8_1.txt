@@ -13,6 +13,7 @@ HEAD is now at 49fdf6785fd6 Merge branch 'for-linus' of git://git.kernel.dk/linu
 $ git bisect start
 status: waiting for both good and bad commits
 
+# 異常なのはHEADバージョンだとgitに知らせる。
 $ git bisect bad
 status: waiting for good commit(s), bad commit known
 
@@ -139,3 +140,8 @@ Switched to branch "main"
 
 $ git branch
 * master
+
+## ======================================================================
+$ git bisect start --term-old fast --term-new slow
+$ git bisect fast
+$ git bisect slow

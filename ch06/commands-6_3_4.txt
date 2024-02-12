@@ -8,6 +8,8 @@ $ git add hello
 $ git ls-files -s
 100644 ebc56522386c504db37db907882c9dbd0d05a0f0 0       hello
 
+$ git diff --check
+
 $ cat .git/MERGE_MSG
 Merge branch 'alt'
 

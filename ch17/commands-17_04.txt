@@ -1,0 +1,5 @@
+## ======================================================================
+$ git branch save-origin-main origin/main
+$ git fetch
+$ git rebase --onto origin/main save-origin-main main
+$ git branch -D save-origin-main

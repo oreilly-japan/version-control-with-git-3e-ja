@@ -33,3 +33,7 @@ From /tmp/Depot/my_website
 $ git branch -a
 * main
   remotes/origin/main
+
+## ======================================================================
+$ git remote update remote_name
+$ git remote add -f origin repository

@@ -58,4 +58,3 @@ Fast forward
  index.html |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
 
-## ======================================================================

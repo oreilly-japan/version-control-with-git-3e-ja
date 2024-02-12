@@ -182,6 +182,9 @@ drwxr-xr-x  3 ppremk  stax    96B Mar 19 22:30 configs
 drwxr-xr-x  4 ppremk  stax   128B Mar 19 22:30 scripts
 
 ## ======================================================================
+$ cat configs/env.config
+PAT=S0m3T0k3n
+
 # 削除したい機密データを格納する文字列表現ファイルファイルを作る
 $ echo "S0m3T0k3n" > sensitive-data.txt
 
@@ -236,4 +239,5 @@ $ git log --oneline
 * c13ca61 add remaining files
 * 06f04cd add latest readme
 
+## ======================================================================
 $ git filter-repo -h

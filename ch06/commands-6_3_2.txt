@@ -51,6 +51,9 @@ index 562080a..1f2f61c 100644
 +>>>>>>> alt
  Yay!
 
+$ git diff --ours
+$ git diff --base
+
 $ cat hello
 hello
 worldly ones

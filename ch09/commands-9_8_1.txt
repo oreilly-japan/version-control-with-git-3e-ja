@@ -76,6 +76,11 @@ $ git show-branch --more=4
 [main~2] Finish my colour haiku
 [main~3] Start my haiku
 
+## ======================================================================
+$ git commit --amend
+$ git rebase -i main~2
+
+## ======================================================================
 $ git rebase -i main~3
 
 # コミットを結合しコミットメッセージを編集

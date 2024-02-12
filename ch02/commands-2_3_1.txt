@@ -39,6 +39,11 @@ $ tree .git
 8 directories, 17 files
 
 ## ======================================================================
+$ sudo apt install tree
+$ sudo dnf install tree
+$ brew install tree
+
+## ======================================================================
 $ find .git/objects
 .git/objects
 .git/objects/pack

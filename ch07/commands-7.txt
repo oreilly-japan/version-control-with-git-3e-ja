@@ -1,0 +1,24 @@
+## ======================================================================
+$ cat initial
+Now is the time
+For all good men
+To come to the aid
+Of their country.
+
+$ cat rewrite
+Today is the time
+For all good men
+And women
+To come to the aid
+Of their country.
+
+$ diff -u initial rewrite
+--- initial     1867-01-02 11:22:33.000000000 -0500
++++ rewrite     2000-01-02 11:23:45.000000000 -0500
+@@ -1,4 +1,5 @@
+-Now is the time
++Today is the time
+ For all good men
++And women
+ To come to the aid
+ Of their country.

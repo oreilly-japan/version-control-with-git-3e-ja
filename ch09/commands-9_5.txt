@@ -158,3 +158,6 @@ $ git commit -m "Add new_file"
 $ git log --oneline
 46623d8 (HEAD -> main) Add new_file
 d8789aa Do
+
+## ======================================================================
+$ git update-ref -d HEAD

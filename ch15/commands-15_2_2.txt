@@ -231,6 +231,9 @@ $ cd example-submodule && ls
 LICENSE      README.md             new-submodule-file.md
 
 ## ======================================================================
+$ git config -f .gitmodules submodule.example-submodule.branch <安定ブランチ名>
+
+## ======================================================================
 # 今回は第2のクローンリポジトリに移動する
 $ pwd
 /tmp/superproject-clone-2
@@ -260,6 +263,10 @@ Submodule path 'example-submodule': checked out '03c93dc48b60829baed35f8f78959a4
 $ cd example-submodule && ls
 LICENSE      README.md             new-submodule-file.md
 
+## ======================================================================
+$ git pull --recurse-submodules
+
+## ======================================================================
 # まず、スーパープロジェクトのGit設定ファイル(.git/config)に
 # サブモジュールの新しい上流URLを反映させる
 $ git submodule sync --recursive

@@ -90,6 +90,10 @@ $ cat .git/config
     remote = korg
     merge = refs/heads/next
 
+## ======================================================================
+$ git remote show remote
+
+## ======================================================================
 # 既存のリポジトリのルートディレクトリから次のコマンドを実行する
 $ git remote add upstreamrepo git://git.example.org/upstreamrepo.git
 # origin/devという異なるリモートを持つ既存ブランチ

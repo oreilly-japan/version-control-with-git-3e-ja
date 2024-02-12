@@ -1,8 +1,9 @@
 ## ======================================================================
 $ git lfs track "*.mp4"
+$ git lfs track images/
+$ git lfs track "*-lfs*.png"
 
 $ git lfs track "*.png"
-
 $ git lfs track "*.[pP][nN][gG]"
 
 $ git lfs untrack "*.png"

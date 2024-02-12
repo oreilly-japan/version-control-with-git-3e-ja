@@ -18,3 +18,6 @@ Writing objects: 100% (3/3), 385 bytes, done.
 Total 3 (delta 1), reused 0 (delta 0)
 To ssh://example.com/tmp/Depot/my_website.git
    55c15c8..451e41c  main -> main
+
+## ======================================================================
+$ git clone https://github.com/sitaramc/gitolite.git

@@ -31,3 +31,11 @@ $ mkdir commit-graph-repo
 ...
 ...
 $ gitk
+
+## ======================================================================
+$ sudo apt install gitk
+$ sudo dnf install gitk
+$ brew install git-gui
+
+## ======================================================================
+$ git config --global gui.encoding utf-8

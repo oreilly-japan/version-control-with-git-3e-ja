@@ -30,14 +30,7 @@ Or undo this operation with:
 Turn off this advice by setting config variable advice.detachedHead to false
 
 HEAD is now at 0eddcbf161 Add MYMETA.json to perl/.gitignore
-```
 
-<!--
-But is that really the right commit?
--->
-しかし、これは本当に求めていたコミットなのだろうか。
-
-```bash
 $ git log -1 --pretty=fuller
 commit 0eddcbf1612ed044de586777b233caf8016c6e70
 Author:     Jack Nagel <jacknagel@gmail.com>

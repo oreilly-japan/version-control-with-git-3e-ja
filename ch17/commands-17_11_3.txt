@@ -1,4 +1,12 @@
 ## ======================================================================
+# 部分クローン
+$ git clone --filter=blob:none repo_url
+$ git clone --filter=tree:0 repo_url
+
+# シャロークローン
+$ git clone --depth=1 repo_url
+$ git clone --shallow-since=<date> repo_url
+
 # スパースチェックアウトをサポートするためのGit設定オプションを初期化する
 $ git sparse-checkout init --cone
 

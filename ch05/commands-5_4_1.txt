@@ -9,7 +9,7 @@ $ echo something > ready
 $ echo something else > notyet
 $ git add ready notyet
 $ git commit -m "Setup"
-[main (root-commit) 63ae368]] Setup
+[main (root-commit) 63ae368] Setup
  2 files changed, 2 insertions(+)
  create mode 100644 notyet
  create mode 100644 ready

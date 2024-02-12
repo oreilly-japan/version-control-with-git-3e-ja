@@ -48,6 +48,11 @@ $ cat .git/config
         remote = origin
         merge = refs/heads/main
 
+## ======================================================================
+$ git branch --set-upstream-to=origin/main main
+
+## ======================================================================
+
 $ git branch -a
 * main
   remotes/origin/HEAD -> origin/main

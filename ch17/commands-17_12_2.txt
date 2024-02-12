@@ -5,6 +5,9 @@ $ sudo apt install git-lfs
 # macOS
 $ brew install git-lfs
 
+# RedHat系のLinuxディストリビューション
+$ sudo dnf install git-lfs
+
 $ cat ~/.gitconfig
 [filter "lfs"]
         smudge = git-lfs smudge -- %f

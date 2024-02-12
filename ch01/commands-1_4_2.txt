@@ -41,6 +41,10 @@ $ git commit -m "Initial contents of my_website"
  create mode 100644 index.html
 
 ## ======================================================================
+$ git config --global commit.template ~/.gitmessage
+$ git config commit.template .gitmessage
+
+## ======================================================================
 # bash、zsh
 $ export GIT_EDITOR=vim
 

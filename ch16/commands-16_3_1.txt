@@ -99,6 +99,10 @@ d1f0e29744a1f32b08d5650e62e2e62afb177c
 
 .git/objects/pack:
 
+## ======================================================================
+$ git fsck --no-reflog
+
+## ======================================================================
 $ git show 66919fae
 commit 66919fae5a5f62afc0a349cc216bb0c59ffe37d0
 Author: Jon Loeliger <jdl@example.com>

@@ -68,6 +68,9 @@ $ git log 'dev@{2 days ago}'
 $ git log dev@{2.days.ago}
 $ git log dev@{2-days-ago}
 
+$ git reflog expire --expire=now --all
+$ git gc
+
 ## ======================================================================
 # リポジトリを作成
 $ mkdir /tmp/recover-reset-hard
@@ -297,7 +300,3 @@ ed6d7b5 HEAD@{6}: commit: Add second file
 7fb4fd6 HEAD@{7}: commit (initial): Add first file
 $ git reflog show new_feature
 e015cf3 (HEAD -> new_feature) new_feature@{0}: branch: Created from HEAD@{1}
-
-## ======================================================================
-$ git reflog expire --expire=now --all
-$ git gc

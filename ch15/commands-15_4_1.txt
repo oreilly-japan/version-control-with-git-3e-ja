@@ -72,5 +72,6 @@ $ git log --oneline --graph
 | * 5d3ce7a Squashed 'example-subtree/' content from commit 08d39b1
 * a5b6866 Initial commit
 
+## ======================================================================
 $ git remote add subremote-origin
   https://github.com/ppremk/example-subtree.git
